@@ -25,4 +25,5 @@ public static final int *;
     public static **[] values();
     public static ** valueOf(java.lang.String);
 }
-
+-keep class * extends android.webkit.WebChromeClient { *; }
+-dontwarn im.delight.android.webview.**

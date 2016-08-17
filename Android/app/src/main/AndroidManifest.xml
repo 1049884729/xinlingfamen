@@ -44,6 +44,7 @@
         </activity>
         <activity
             android:name=".ui.MainActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="${applicationId}.main" />
