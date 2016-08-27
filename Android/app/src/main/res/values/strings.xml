@@ -27,5 +27,6 @@
     <string name="actionbar_activity_not_found">Failed to open intent&#8230;</string>
     <string name="umeng_example_home_hint_wait">Coming soooooon</string>
     <string name="intro"> The webview before show js call Umeng Analytics APIs</string>
+    <string name="title_activity_base">BaseActivity</string>
 
 </resources>
