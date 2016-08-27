@@ -16,7 +16,8 @@ public class WelcomeActivity extends AppCompatActivity {
           @Override
           public void handleMessage(Message msg) {
               super.handleMessage(msg);
-              Intent intent=new Intent(getPackageName()+".main");
+//              Intent intent=new Intent(getPackageName()+".main");
+              Intent intent=new Intent(getPackageName()+".HomeTab");
               startActivity(intent);
               finish();
           }

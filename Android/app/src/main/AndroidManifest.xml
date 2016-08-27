@@ -53,7 +53,13 @@
         <activity
             android:name=".BaseActivity"
             android:label="@string/title_activity_base" />
-        <activity android:name=".core.home.HomeTabActivity"></activity>
+        <activity android:name=".core.home.HomeTabActivity">
+            <intent-filter>
+                <action android:name="${applicationId}.HomeTab" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

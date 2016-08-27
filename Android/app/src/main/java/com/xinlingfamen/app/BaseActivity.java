@@ -20,7 +20,7 @@ public class BaseActivity extends FragmentActivity {
         fragmentManager = getSupportFragmentManager();
     }
 
-    private FragmentManager fragmentManager;
+    protected FragmentManager fragmentManager;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
