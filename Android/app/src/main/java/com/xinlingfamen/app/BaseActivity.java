@@ -1,5 +1,6 @@
 package com.xinlingfamen.app;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
@@ -14,10 +15,12 @@ import java.util.List;
  */
 public class BaseActivity extends FragmentActivity {
 
+    protected Context mContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         fragmentManager = getSupportFragmentManager();
+        mContext=this;
     }
 
     protected FragmentManager fragmentManager;

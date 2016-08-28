@@ -17,8 +17,10 @@
 <resources>
 
     <style name="Theme.Start" parent="@style/Theme.AppCompat.DayNight.NoActionBar">
-        <item name="android:windowBackground">@drawable/splash_bg</item>
+        <!--<item name="android:windowBackground">@drawable/splash_bg</item>-->
         <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@android:color/holo_red_dark</item>
+
         <item name="android:windowNoTitle">true</item>
     </style>
 
