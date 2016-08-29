@@ -30,7 +30,7 @@ public class WeiOrgNetFragment extends BaseFragment implements AdvancedWebView.L
         mWebView.setListener(getActivity(), this);
         mWebView.setMixedContentAllowed(true);
         mWebView.addPermittedHostname("xlcihang.info");
-        mWebView.loadUrl("http://xlcihang.info/b/",preventCaching);
+        mWebView.loadUrl("http://www.ffeap.com/fm/index.html",preventCaching);
         // ...
 
         return rootView;
