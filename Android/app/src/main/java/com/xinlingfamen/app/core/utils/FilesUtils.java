@@ -12,6 +12,8 @@ public class FilesUtils {
     public static final String FOLDER_NAME = "XinLingfamen";
     public static final String DOWNLOAD_MP3 = FOLDER_NAME+File.separator+"mp3s";
     public static final String DOWNLOAD_VIDEO = FOLDER_NAME+File.separator+"videos";
+    public static final String DOWNLOAD_OTHER= FOLDER_NAME+File.separator+"other";
+    public static final String DOWNLOAD_FILE= FOLDER_NAME+File.separator+"file";
 
 
     /**

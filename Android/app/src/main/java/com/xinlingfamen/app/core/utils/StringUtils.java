@@ -22,6 +22,17 @@ public class StringUtils {
      */
     public static boolean isGrantDownload(String url){
         if (url.endsWith(".mp3"))return true;
+        if (isVideoFile(url))return true;
+        return false;
+    }
+
+    /**
+     * 判断是否是视频文件
+     * @param url
+     * @return
+     */
+    public static boolean isVideoFile(String url){
+        if (url.toLowerCase().endsWith(".3gp")||url.toLowerCase().endsWith(".mp4")||url.toLowerCase().endsWith(".rmvb"))return true;
         return false;
     }
 }

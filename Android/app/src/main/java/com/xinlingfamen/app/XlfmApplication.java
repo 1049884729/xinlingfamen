@@ -21,6 +21,8 @@ public class XlfmApplication extends Application
         FilesUtils.createFolders(FilesUtils.FOLDER_NAME);
         FilesUtils.createFolders(FilesUtils.DOWNLOAD_MP3);
         FilesUtils.createFolders(FilesUtils.DOWNLOAD_VIDEO);
+        FilesUtils.createFolders(FilesUtils.DOWNLOAD_OTHER);
+        FilesUtils.createFolders(FilesUtils.DOWNLOAD_FILE);
         uemngInit();
     }
     

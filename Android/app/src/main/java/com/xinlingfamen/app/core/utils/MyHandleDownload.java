@@ -28,8 +28,17 @@ public class MyHandleDownload
             request.allowScanningByMediaScanner();
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         }
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, toFilename);
-        
+        if (fromUrl.endsWith("mp3")){
+            request.setDestinationInExternalPublicDir(FilesUtils.DOWNLOAD_MP3, toFilename);
+
+        }else if (StringUtils.isVideoFile(fromUrl)){
+            request.setDestinationInExternalPublicDir(FilesUtils.DOWNLOAD_VIDEO, toFilename);
+
+        }else {
+            request.setDestinationInExternalPublicDir(FilesUtils.DOWNLOAD_OTHER, toFilename);
+
+        }
+
         final DownloadManager dm = (DownloadManager)context.getSystemService(Context.DOWNLOAD_SERVICE);
         try
         {
