@@ -1,6 +1,8 @@
 package com.xinlingfamen.app.core.home;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -8,6 +10,8 @@ import android.widget.TextView;
 
 import com.xinlingfamen.app.BaseActivity;
 import com.xinlingfamen.app.R;
+
+import java.util.List;
 
 /**
  * Tab
@@ -132,5 +136,17 @@ public class HomeTabActivity extends BaseActivity {
         }
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        if (fragments != null && fragments.size() > 0) {
+            for (Fragment fragment : fragments) {
+                try {
+                    fragment.onActivityResult(requestCode, resultCode, data);
+                } catch (Exception e) {
+                }
+            }
+        }
+    }
 }
