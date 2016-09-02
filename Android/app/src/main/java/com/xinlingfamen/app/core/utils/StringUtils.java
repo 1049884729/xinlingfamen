@@ -1,5 +1,9 @@
 package com.xinlingfamen.app.core.utils;
 
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+
 /**
  * Created by xuff on 2016/9/1.
  */
@@ -34,5 +38,21 @@ public class StringUtils {
     public static boolean isVideoFile(String url){
         if (url.toLowerCase().endsWith(".3gp")||url.toLowerCase().endsWith(".mp4")||url.toLowerCase().endsWith(".rmvb"))return true;
         return false;
+    }
+
+    /**
+     * 获取版本号
+     *
+     * @return 当前应用的版本号
+     */
+    public static int getVersion(Context context) {
+        try {
+            PackageManager manager = context.getPackageManager();
+            PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
+            return info.versionCode;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 1;
+        }
     }
 }

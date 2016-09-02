@@ -31,4 +31,6 @@ dependencies {
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.qiniu:qiniu-android-sdk:7.2.2'
     compile 'com.android.support:support-v4:24.2.0'
+    compile 'com.loopj.android:android-async-http:1.4.9'
+    compile 'com.google.code.gson:gson:2.7'
 }

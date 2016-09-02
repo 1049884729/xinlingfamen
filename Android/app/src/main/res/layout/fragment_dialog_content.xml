@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@android:color/white"
+    android:layout_height="match_parent"
+    tools:context=".core.utils.DialogContentFragment">
+    <TextView
+        android:layout_width="match_parent"
+        android:id="@+id/dialog_title"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:textSize="20dp"
+        android:text="提示" />
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_width="match_parent"
+        android:id="@+id/dialog_content"
+        android:layout_below="@+id/dialog_title"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:text="@string/hello_blank_fragment" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dialog_content"
+        android:id="@+id/btn_cancel"
+        android:layout_marginLeft="20dp"
+        android:minWidth="100dp"
+        android:text="@string/umeng_common_action_cancel"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dialog_content"
+        android:id="@+id/btn_ok"
+        android:minWidth="100dp"
+        android:layout_toLeftOf="@+id/btn_cancel"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:text="@string/umeng_common_action_Ok"/>
+</RelativeLayout>

@@ -1,30 +1,38 @@
 package com.xinlingfamen.app.core.home;
 
+import com.google.gson.Gson;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.ResponseHandlerInterface;
+import com.xinlingfamen.app.BaseFragment;
+import com.xinlingfamen.app.R;
+import com.xinlingfamen.app.core.config.Constants;
+import com.xinlingfamen.app.core.modules.WeiOrgNetBean;
+import com.xinlingfamen.app.core.qiniu.Auth;
+import com.xinlingfamen.app.core.utils.HttpUtil;
+import com.xinlingfamen.app.core.utils.MyHandleDownload;
+import com.xinlingfamen.app.core.utils.StringUtils;
+
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.DownloadListener;
 import android.webkit.PermissionRequest;
 import android.webkit.WebChromeClient;
 import android.widget.Toast;
 
-import com.umeng.update.UmengUpdateAgent;
-import com.xinlingfamen.app.BaseFragment;
-import com.xinlingfamen.app.R;
-import com.xinlingfamen.app.core.utils.MyHandleDownload;
-import com.xinlingfamen.app.core.utils.StringUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import java.net.URL;
+import java.io.UnsupportedEncodingException;
 
+import cz.msebera.android.httpclient.Header;
 import im.delight.android.webview.AdvancedWebView;
 
 public class WeiOrgNetFragment extends BaseFragment implements AdvancedWebView.Listener
@@ -35,7 +43,7 @@ public class WeiOrgNetFragment extends BaseFragment implements AdvancedWebView.L
     private static final String LOG_NAME = "WeiOrgNetFragment";
     
     boolean preventCaching = true;
-    
+    private Auth auth=new Auth();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -45,6 +53,7 @@ public class WeiOrgNetFragment extends BaseFragment implements AdvancedWebView.L
         mWebView.setListener(getActivity(), this);
         mWebView.setMixedContentAllowed(true);
         mWebView.addPermittedHostname("xlcihang.info");
+
         mWebView.loadUrl("http://www.ffeap.com/fm/index.html", preventCaching);
         mWebView.setGeolocationEnabled(true);
         mWebView.setWebChromeClient(new WebChromeClient()
@@ -68,7 +77,28 @@ public class WeiOrgNetFragment extends BaseFragment implements AdvancedWebView.L
         
         return rootView;
     }
-    
+    private void initCheckUri(){
+        HttpUtil.get(auth.privateDownloadUrl(Constants.URL_WEIORGNET), new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    String res = new String(responseBody,"UTF-8");
+                    Gson gson=new Gson();
+                    WeiOrgNetBean weiOrgNetBean=gson.fromJson(res, WeiOrgNetBean.class);
+                    if (weiOrgNetBean.updateVersion==0){
+                        mWebView.loadUrl(weiOrgNetBean.newUrl,preventCaching);
+                    }
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
+    }
     @SuppressLint("NewApi")
     @Override
     public void onResume()
