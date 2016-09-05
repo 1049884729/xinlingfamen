@@ -12,7 +12,7 @@ import com.xinlingfamen.app.core.utils.FilesUtils;
 public class XlfmApplication extends Application
 {
     private Context context;
-    
+
     @Override
     public void onCreate()
     {

@@ -3,11 +3,13 @@ package com.xinlingfamen.app.core.utils;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,21 +99,46 @@ public class DialogUtils
         void deal();
     }
     
-    public static DialogFragment dialogFragment(FragmentManager fragmentManager, String cantent,
+    public static void dialogFragment(Context context, String content,
         final DialogOkDeal dialogOkDeal)
     {
-        DialogContentFragment fragment = new DialogContentFragment()
-        {
+        AlertDialog.Builder alertDialog= new AlertDialog.Builder(context);
+        alertDialog.setCancelable(true);
+        alertDialog.setTitle("提示");
+        alertDialog.setMessage(content);
+        alertDialog.setNegativeButton(R.string.umeng_common_action_cancel, new DialogInterface.OnClickListener() {
             @Override
-            public void deal()
-            {
-                dialogOkDeal.deal();
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
             }
-        };
-        Bundle args = new Bundle();
-        args.putString(DialogContentFragment.ARG_PARAM1, cantent);
-        fragment.setArguments(args);
-        return fragment;
+        });
+        alertDialog.setPositiveButton(R.string.umeng_common_action_Ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogOkDeal.deal();
+                dialogInterface.dismiss();
+            }
+        });
+        alertDialog.create().show();
+//        DialogContentFragment fragment = new DialogContentFragment()
+//        {
+//            @Override
+//            public void deal()
+//            {
+//                dialogOkDeal.deal();
+//            }
+//        };
+//        Bundle args = new Bundle();
+//        args.putString(DialogContentFragment.ARG_PARAM1, cantent);
+////        fragment.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.fragment_dialog_style);
+//        fragment.setCancelable(true);
+//        try {
+//            if (fragment != null && !fragmentManager.isDestroyed())
+//                fragment.show(fragmentManager, cantent);
+//        } catch (Exception e) {
+//
+//        }
+       
         
     }
     

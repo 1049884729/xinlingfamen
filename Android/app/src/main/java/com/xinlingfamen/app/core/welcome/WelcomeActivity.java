@@ -199,7 +199,6 @@ public class WelcomeActivity extends AppCompatActivity implements DownloadManage
         intent.setAction(android.content.Intent.ACTION_VIEW);
         File downloadFile = new File(Environment.getExternalStorageDirectory() + File.separator
                 + FilesUtils.DOWNLOAD_OTHER + File.separator + downLoadFileName + ".apk");
-        Log.e("downloadFile",downloadFile.getAbsolutePath());
         intent.setDataAndType(Uri.fromFile(downloadFile), "application/vnd.android.package-archive");
         startActivity(intent);
     }

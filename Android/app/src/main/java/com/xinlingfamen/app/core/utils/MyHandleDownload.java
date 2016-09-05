@@ -36,7 +36,6 @@ public class MyHandleDownload
 
         }else {
             request.setDestinationInExternalPublicDir(FilesUtils.DOWNLOAD_OTHER, toFilename);
-
         }
 
         final DownloadManager dm = (DownloadManager)context.getSystemService(Context.DOWNLOAD_SERVICE);
