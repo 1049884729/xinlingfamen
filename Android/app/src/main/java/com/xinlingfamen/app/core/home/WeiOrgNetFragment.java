@@ -25,6 +25,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.PermissionRequest;
 import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -35,7 +38,7 @@ import java.io.UnsupportedEncodingException;
 import cz.msebera.android.httpclient.Header;
 import im.delight.android.webview.AdvancedWebView;
 
-public class WeiOrgNetFragment extends BaseFragment implements AdvancedWebView.Listener
+public class WeiOrgNetFragment extends BaseFragment implements AdvancedWebView.Listener, WeiOrgNetFragmentBack
 {
     
     private AdvancedWebView mWebView;
@@ -43,21 +46,32 @@ public class WeiOrgNetFragment extends BaseFragment implements AdvancedWebView.L
     private static final String LOG_NAME = "WeiOrgNetFragment";
     
     boolean preventCaching = true;
-    private Auth auth=new Auth();
+    
+    private Auth auth = new Auth();
+    
+    private ProgressBar progressBar;
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View rootView = inflater.inflate(R.layout.activity_main, container, false);
         
         mWebView = (AdvancedWebView)rootView.findViewById(R.id.webview);
+        progressBar = (ProgressBar)rootView.findViewById(R.id.progressbar);
         mWebView.setListener(getActivity(), this);
         mWebView.setMixedContentAllowed(true);
-        mWebView.addPermittedHostname("xlcihang.info");
-
-        mWebView.loadUrl("http://www.ffeap.com/fm/index.html", preventCaching);
-        mWebView.setGeolocationEnabled(true);
+        progressBar.setProgress(0);
+        mWebView.loadUrl("http://www.sina.com.cn/", preventCaching);
+        // mWebView.loadUrl("http://www.ffeap.com/fm/index.html", preventCaching);
         mWebView.setWebChromeClient(new WebChromeClient()
         {
+            @Override
+            public void onProgressChanged(WebView view, int newProgress)
+            {
+                super.onProgressChanged(view, newProgress);
+                progressBar.setProgress(newProgress);
+            }
+            
             @Override
             public void onPermissionRequest(final PermissionRequest request)
             {
@@ -77,28 +91,38 @@ public class WeiOrgNetFragment extends BaseFragment implements AdvancedWebView.L
         
         return rootView;
     }
-    private void initCheckUri(){
-        HttpUtil.get(auth.privateDownloadUrl(Constants.URL_WEIORGNET), new AsyncHttpResponseHandler() {
+    
+    private void initCheckUri()
+    {
+        HttpUtil.get(auth.privateDownloadUrl(Constants.URL_WEIORGNET), new AsyncHttpResponseHandler()
+        {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                try {
-                    String res = new String(responseBody,"UTF-8");
-                    Gson gson=new Gson();
-                    WeiOrgNetBean weiOrgNetBean=gson.fromJson(res, WeiOrgNetBean.class);
-                    if (weiOrgNetBean.updateVersion==0){
-                        mWebView.loadUrl(weiOrgNetBean.newUrl,preventCaching);
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody)
+            {
+                try
+                {
+                    String res = new String(responseBody, "UTF-8");
+                    Gson gson = new Gson();
+                    WeiOrgNetBean weiOrgNetBean = gson.fromJson(res, WeiOrgNetBean.class);
+                    if (weiOrgNetBean.updateVersion == 0)
+                    {
+                        mWebView.loadUrl(weiOrgNetBean.newUrl, preventCaching);
                     }
-                } catch (UnsupportedEncodingException e) {
+                }
+                catch (UnsupportedEncodingException e)
+                {
                     e.printStackTrace();
                 }
             }
-
+            
             @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error)
+            {
+                
             }
         });
     }
+    
     @SuppressLint("NewApi")
     @Override
     public void onResume()
@@ -154,7 +178,7 @@ public class WeiOrgNetFragment extends BaseFragment implements AdvancedWebView.L
     {
         // some file is available for download
         // either handle the download yourself or use the code below
-        downFile(url);
+        // downFile(url);
         
     }
     
@@ -175,6 +199,17 @@ public class WeiOrgNetFragment extends BaseFragment implements AdvancedWebView.L
                 Toast.makeText(mContext, "已经开始下载文件" + fileName, Toast.LENGTH_SHORT).show();
             }
         }
+    }
+    
+    @Override
+    public boolean onBackPressed()
+    {
+        if (!mWebView.onBackPressed())
+        {
+            return false;
+        }
+        // ...
+        return true;
     }
     
 }
