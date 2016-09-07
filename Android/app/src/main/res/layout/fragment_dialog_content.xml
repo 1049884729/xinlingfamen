@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:background="@android:color/white"
     android:layout_height="match_parent"
-    tools:context=".core.utils.DialogContentFragment">
+    tools:context=".utils.DialogContentFragment">
     <TextView
         android:layout_width="match_parent"
         android:id="@+id/dialog_title"

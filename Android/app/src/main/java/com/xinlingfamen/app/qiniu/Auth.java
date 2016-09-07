@@ -1,4 +1,4 @@
-package com.xinlingfamen.app.core.qiniu;
+package com.xinlingfamen.app.qiniu;
 
 /**
  * Created by xuff on 2016/9/1.

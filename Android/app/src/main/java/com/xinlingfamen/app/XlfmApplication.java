@@ -4,7 +4,8 @@ import android.app.Application;
 import android.content.Context;
 
 import com.umeng.analytics.MobclickAgent;
-import com.xinlingfamen.app.core.utils.FilesUtils;
+import com.xinlingfamen.app.db.DatabaseHelper;
+import com.xinlingfamen.app.utils.FilesUtils;
 
 /**
  * Created by Administrator on 2016/8/17.
@@ -12,7 +13,7 @@ import com.xinlingfamen.app.core.utils.FilesUtils;
 public class XlfmApplication extends Application
 {
     private Context context;
-
+    
     @Override
     public void onCreate()
     {
@@ -24,11 +25,17 @@ public class XlfmApplication extends Application
         FilesUtils.createFolders(FilesUtils.DOWNLOAD_OTHER);
         FilesUtils.createFolders(FilesUtils.DOWNLOAD_FILE);
         uemngInit();
+        initDatabase();
     }
     
     private void uemngInit()
     {
         MobclickAgent.setScenarioType(context, MobclickAgent.EScenarioType.E_UM_NORMAL);
         MobclickAgent.enableEncrypt(true);// 6.0.0版本及以后
+    }
+    
+    private void initDatabase()
+    {
+        new DatabaseHelper(context);
     }
 }

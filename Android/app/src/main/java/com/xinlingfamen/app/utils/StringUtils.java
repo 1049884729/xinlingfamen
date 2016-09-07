@@ -1,4 +1,4 @@
-package com.xinlingfamen.app.core.utils;
+package com.xinlingfamen.app.utils;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;

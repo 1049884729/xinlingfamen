@@ -1,4 +1,4 @@
-package com.xinlingfamen.app.core.qiniu;
+package com.xinlingfamen.app.qiniu;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

@@ -1,4 +1,4 @@
-package com.xinlingfamen.app.core.utils;
+package com.xinlingfamen.app.utils;
 
 import android.os.Environment;
 

@@ -1,4 +1,4 @@
-package com.xinlingfamen.app.core.utils;
+package com.xinlingfamen.app.utils;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;

@@ -2,16 +2,15 @@ package com.xinlingfamen.app.core.home;
 
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.ResponseHandlerInterface;
 import com.xinlingfamen.app.BaseFragment;
 import com.xinlingfamen.app.R;
-import com.xinlingfamen.app.core.config.Constants;
+import com.xinlingfamen.app.config.Constants;
 import com.xinlingfamen.app.core.modules.WeiOrgNetBean;
-import com.xinlingfamen.app.core.qiniu.Auth;
-import com.xinlingfamen.app.core.utils.HttpUtil;
-import com.xinlingfamen.app.core.utils.MyHandleDownload;
-import com.xinlingfamen.app.core.utils.StringUtils;
+import com.xinlingfamen.app.qiniu.Auth;
+import com.xinlingfamen.app.utils.HttpUtil;
+import com.xinlingfamen.app.utils.MyHandleDownload;
+import com.xinlingfamen.app.utils.SharePrefenceUtils;
+import com.xinlingfamen.app.utils.StringUtils;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -19,19 +18,14 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.PermissionRequest;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
@@ -61,8 +55,13 @@ public class WeiOrgNetFragment extends BaseFragment implements AdvancedWebView.L
         mWebView.setListener(getActivity(), this);
         mWebView.setMixedContentAllowed(true);
         progressBar.setProgress(0);
-        mWebView.loadUrl("http://www.sina.com.cn/", preventCaching);
-        // mWebView.loadUrl("http://www.ffeap.com/fm/index.html", preventCaching);
+        String netUrl =
+            SharePrefenceUtils.getInstance(mContext).getStringPreference(Constants.SharePreKeys.weiOrgNet_VALUE);
+        if (netUrl == null || netUrl.length() == 0)
+        {
+            netUrl = "http://xlcihang.info/b/";
+        }
+        mWebView.loadUrl(netUrl, preventCaching);
         mWebView.setWebChromeClient(new WebChromeClient()
         {
             @Override
@@ -88,7 +87,7 @@ public class WeiOrgNetFragment extends BaseFragment implements AdvancedWebView.L
                 
             }// onPermissionRequest
         });// setWebChrome
-        
+        initCheckUri();
         return rootView;
     }
     
@@ -104,8 +103,14 @@ public class WeiOrgNetFragment extends BaseFragment implements AdvancedWebView.L
                     String res = new String(responseBody, "UTF-8");
                     Gson gson = new Gson();
                     WeiOrgNetBean weiOrgNetBean = gson.fromJson(res, WeiOrgNetBean.class);
-                    if (weiOrgNetBean.updateVersion == 0)
+                    int currentVersion = SharePrefenceUtils.getInstance(mContext)
+                        .getIntPreference(Constants.SharePreKeys.weiOrgNet_VERSION);
+                    if (weiOrgNetBean.updateVersion != currentVersion)
                     {
+                        SharePrefenceUtils.getInstance(mContext)
+                            .setStringPreference(Constants.SharePreKeys.weiOrgNet_VALUE, weiOrgNetBean.newUrl);
+                        SharePrefenceUtils.getInstance(mContext)
+                            .setIntPreference(Constants.SharePreKeys.weiOrgNet_VERSION, weiOrgNetBean.updateVersion);
                         mWebView.loadUrl(weiOrgNetBean.newUrl, preventCaching);
                     }
                 }

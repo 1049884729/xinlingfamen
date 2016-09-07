@@ -1,7 +1,6 @@
-package com.xinlingfamen.app.core.qiniu;
+package com.xinlingfamen.app.qiniu;
 
 
-import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 
 /**

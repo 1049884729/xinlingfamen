@@ -1,4 +1,4 @@
-package com.xinlingfamen.app.core.config;
+package com.xinlingfamen.app.config;
 
 /**
  * Created by xuff on 2016/9/1.
@@ -20,6 +20,7 @@ public class Constants
     
     public static class SharePreKeys
     {
+        public static final String sharePreXml="xlfmXml";
         /**
          * 微官网地址版本号，有更新的话，版本号要大一个数值
          */

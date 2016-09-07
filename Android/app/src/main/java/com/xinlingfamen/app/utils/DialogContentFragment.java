@@ -1,4 +1,4 @@
-package com.xinlingfamen.app.core.utils;
+package com.xinlingfamen.app.utils;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
