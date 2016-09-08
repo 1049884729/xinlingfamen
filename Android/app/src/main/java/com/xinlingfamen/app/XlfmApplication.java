@@ -4,7 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.umeng.analytics.MobclickAgent;
-import com.xinlingfamen.app.db.DatabaseHelper;
+import com.xinlingfamen.app.db.OrmliteHelper;
 import com.xinlingfamen.app.utils.FilesUtils;
 
 /**
@@ -36,6 +36,6 @@ public class XlfmApplication extends Application
     
     private void initDatabase()
     {
-        new DatabaseHelper(context);
+        OrmliteHelper.getInstance(context);
     }
 }
