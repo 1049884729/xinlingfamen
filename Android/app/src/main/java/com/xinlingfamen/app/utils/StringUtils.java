@@ -21,12 +21,13 @@ public class StringUtils {
 
     /**
      *
-     * @param url
+     * @param urlddffdddda
      * @return true 允许下载，否则false，不允许下载
      */
     public static boolean isGrantDownload(String url){
         if (url.endsWith(".mp3"))return true;
         if (isVideoFile(url))return true;
+        if (isTxtPdfFile(url))return true;
         return false;
     }
 
@@ -40,6 +41,15 @@ public class StringUtils {
         return false;
     }
 
+    /**
+     *
+     * @param url
+     * @return
+     */
+    public static boolean isTxtPdfFile(String url){
+        if (url.toLowerCase().endsWith(".pdf")||url.toLowerCase().endsWith(".txt"))return true;
+        return false;
+    }
     /**
      * 获取版本号
      *

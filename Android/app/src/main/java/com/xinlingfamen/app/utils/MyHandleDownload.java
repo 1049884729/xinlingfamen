@@ -33,6 +33,8 @@ public class MyHandleDownload
         }else if (StringUtils.isVideoFile(fromUrl)){
             request.setDestinationInExternalPublicDir(FilesUtils.DOWNLOAD_VIDEO, toFilename);
 
+        }else if (StringUtils.isTxtPdfFile(fromUrl)){
+            request.setDestinationInExternalPublicDir(FilesUtils.DOWNLOAD_FILE, toFilename);
         }else {
             request.setDestinationInExternalPublicDir(FilesUtils.DOWNLOAD_OTHER, toFilename);
         }

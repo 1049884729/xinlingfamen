@@ -45,7 +45,7 @@ public class Rebuilder extends Thread{
                     FileUtils.getInputStream(task.save_address, String.valueOf(chunk.id));
 
             try {
-                while ((read = chFileIn.read(readBuffer)) > 0) {
+                while (chFileIn!=null&&(read = chFileIn.read(readBuffer)) > 0) {
                     finalFile.write(readBuffer, 0, read);
                 }
             } catch (IOException e) {

@@ -1,5 +1,8 @@
 package com.xinlingfamen.app.core.home;
 
+import com.golshadi.majid.core.DownloadManagerPro;
+import com.golshadi.majid.database.DatabaseHelper;
+import com.golshadi.majid.database.TasksDataSource;
 import com.golshadi.majid.report.listener.DownloadManagerListener;
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -7,7 +10,10 @@ import com.xinlingfamen.app.BaseFragment;
 import com.xinlingfamen.app.R;
 import com.xinlingfamen.app.config.Constants;
 import com.xinlingfamen.app.core.modules.WeiOrgNetBean;
+import com.xinlingfamen.app.core.welcome.WelcomeActivity;
 import com.xinlingfamen.app.qiniu.Auth;
+import com.xinlingfamen.app.utils.DialogUtils;
+import com.xinlingfamen.app.utils.FilesUtils;
 import com.xinlingfamen.app.utils.HttpUtil;
 import com.xinlingfamen.app.utils.MyHandleDownload;
 import com.xinlingfamen.app.utils.SharePrefenceUtils;
@@ -24,6 +30,7 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +40,7 @@ import android.webkit.WebView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import cz.msebera.android.httpclient.Header;
@@ -40,7 +48,7 @@ import im.delight.android.webview.AdvancedWebView;
 
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
-public class WeiOrgNetFragment extends BaseFragment implements AdvancedWebView.Listener, WeiOrgNetFragmentBack, DownloadManagerListener {
+public class WeiOrgNetFragment extends BaseFragment implements AdvancedWebView.Listener, WeiOrgNetFragmentBack{
 
     private AdvancedWebView mWebView;
 
@@ -169,14 +177,21 @@ public class WeiOrgNetFragment extends BaseFragment implements AdvancedWebView.L
         // either handle the download yourself or use the code below
         if (isMNC()) {
             if (getActivity().checkSelfPermission(WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                tempDownLoadUrl=url;
+                   requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE},REQUEST_WRITE);
+            }else {
+                downFile(url);
 
             }
 
+        }else {
+            downFile(url);
+
         }
-        downFile(url);
 
     }
 
+    private String tempDownLoadUrl=null;
     public boolean isMNC() {
         /*
          TODO: In the Android M Preview release, checking if the platform is M is done through
@@ -192,21 +207,67 @@ public class WeiOrgNetFragment extends BaseFragment implements AdvancedWebView.L
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
+           if (requestCode==REQUEST_WRITE){
+               int size=permissions.length;
+               for (int grant=0;grant<size;grant++){
+                   if (grantResults[grant]==PackageManager.PERMISSION_GRANTED){
+                       downFile(tempDownLoadUrl);
+                   }else {
+                       Toast.makeText(mContext,"没有权限使用存储卡",Toast.LENGTH_LONG).show();
+                   }
+               }
+           }
     }
+
 
     @Override
     public void onExternalPageRequest(String url) {
-        downFile(url);
+        if (isMNC()) {
+            if (getActivity().checkSelfPermission(WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                tempDownLoadUrl=url;
+                requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE},REQUEST_WRITE);
+            }else {
+                downFile(url);
+
+            }
+
+        }else {
+            downFile(url);
+
+        }
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        dm = new DownloadManagerPro(mContext);
+        tasksDataSource=new TasksDataSource();
+        tasksDataSource.openDatabase(new DatabaseHelper(mContext));
+
+    }
+
+    DownloadManagerPro dm ;
+    TasksDataSource tasksDataSource;
     private void downFile(String url) {
 
         if (StringUtils.isGrantDownload(url)) {
             String fileName = StringUtils.getFileNameFromUrl(url);
+
             if (MyHandleDownload.handleDownload(mContext, url, fileName)) {
                 // download successfully handled
-                Toast.makeText(mContext, "已经开始下载文件" + fileName, Toast.LENGTH_SHORT).show();
+                String destFile="save to /sdcard/";
+                if (url.endsWith("mp3")){
+                    destFile+=FilesUtils.DOWNLOAD_MP3;
+
+                }else if (StringUtils.isVideoFile(url)){
+                    destFile+=FilesUtils.DOWNLOAD_VIDEO;
+
+                }else if (StringUtils.isTxtPdfFile(url)){
+                    destFile+=FilesUtils.DOWNLOAD_FILE;
+                }else {
+                    destFile+=FilesUtils.DOWNLOAD_OTHER;
+                }
+                Toast.makeText(mContext, "下载文件"+destFile + fileName, Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -220,43 +281,5 @@ public class WeiOrgNetFragment extends BaseFragment implements AdvancedWebView.L
         return true;
     }
 
-    @Override
-    public void OnDownloadStarted(long taskId) {
 
-    }
-
-    @Override
-    public void OnDownloadPaused(long taskId) {
-
-    }
-
-    @Override
-    public void onDownloadProcess(long taskId, double percent, long downloadedLength) {
-
-    }
-
-    @Override
-    public void OnDownloadFinished(long taskId) {
-
-    }
-
-    @Override
-    public void OnDownloadRebuildStart(long taskId) {
-
-    }
-
-    @Override
-    public void OnDownloadRebuildFinished(long taskId) {
-
-    }
-
-    @Override
-    public void OnDownloadCompleted(long taskId) {
-
-    }
-
-    @Override
-    public void connectionLost(long taskId) {
-
-    }
 }
