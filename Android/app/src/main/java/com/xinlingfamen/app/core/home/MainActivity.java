@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.umeng.update.UmengUpdateAgent;
 import com.xinlingfamen.app.R;
 
 import im.delight.android.webview.AdvancedWebView;
@@ -19,7 +18,6 @@ public class MainActivity extends AppCompatActivity implements AdvancedWebView.L
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        UmengUpdateAgent.update(this);
         setContentView(R.layout.activity_main);
         mWebView = (AdvancedWebView)findViewById(R.id.webview);
         mWebView.setListener(this, this);

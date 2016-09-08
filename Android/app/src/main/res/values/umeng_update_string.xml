@@ -15,5 +15,6 @@
 	<string name="UMToast_IsUpdating">Updating....</string>
 	<string name="UMDialog_InstallAPK">The lastest version has been downloaded, install now ?</string>
 	<string name="UMUpdateCheck">2.8.0.0.20160506</string>
+	<string name="umeng_common_action_Ok">OK</string>
 
 </resources>

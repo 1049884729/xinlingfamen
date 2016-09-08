@@ -30,7 +30,7 @@
             android:textSize="@dimen/bottom_tab_tvSize"
 
             android:gravity="center"
-            android:text="资源" />
+            android:text="已下载" />
 
         <TextView
             android:layout_width="0dp"
@@ -39,7 +39,7 @@
             android:gravity="center"
             android:textSize="@dimen/bottom_tab_tvSize"
 
-            android:text="社区" />
+            android:text="通知" />
 
         <TextView
             android:layout_width="0dp"
@@ -48,7 +48,7 @@
             android:textSize="@dimen/bottom_tab_tvSize"
 
             android:gravity="center"
-            android:text="我的" />
+            android:text="设置" />
     </LinearLayout>
 
     <FrameLayout

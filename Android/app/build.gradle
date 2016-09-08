@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 24
     buildToolsVersion "24.0.1"
-
+    useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "com.xinlingfamen.app"
         minSdkVersion 10
@@ -31,4 +31,7 @@ dependencies {
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.qiniu:qiniu-android-sdk:7.2.2'
     compile 'com.android.support:support-v4:24.2.0'
+    compile 'com.loopj.android:android-async-http:1.4.9'
+    compile 'com.google.code.gson:gson:2.7'
+    compile 'com.j256.ormlite:ormlite-android:5.0'
 }
