@@ -1,34 +1,34 @@
 package com.xinlingfamen.app.core.home;
 
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
+import java.io.UnsupportedEncodingException;
+
 import com.golshadi.majid.core.DownloadManagerPro;
 import com.golshadi.majid.database.DatabaseHelper;
 import com.golshadi.majid.database.TasksDataSource;
-import com.golshadi.majid.report.listener.DownloadManagerListener;
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.xinlingfamen.app.BaseFragment;
 import com.xinlingfamen.app.R;
 import com.xinlingfamen.app.config.Constants;
 import com.xinlingfamen.app.core.modules.WeiOrgNetBean;
-import com.xinlingfamen.app.core.welcome.WelcomeActivity;
 import com.xinlingfamen.app.qiniu.Auth;
-import com.xinlingfamen.app.utils.DialogUtils;
 import com.xinlingfamen.app.utils.FilesUtils;
 import com.xinlingfamen.app.utils.HttpUtil;
 import com.xinlingfamen.app.utils.MyHandleDownload;
 import com.xinlingfamen.app.utils.SharePrefenceUtils;
 import com.xinlingfamen.app.utils.StringUtils;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.pm.PermissionGroupInfo;
-import android.content.pm.PermissionInfo;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -38,15 +38,11 @@ import android.webkit.PermissionRequest;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
-
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 
 import cz.msebera.android.httpclient.Header;
 import im.delight.android.webview.AdvancedWebView;
-
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class WeiOrgNetFragment extends BaseFragment implements AdvancedWebView.Listener, WeiOrgNetFragmentBack{
 
@@ -59,13 +55,14 @@ public class WeiOrgNetFragment extends BaseFragment implements AdvancedWebView.L
     private Auth auth = new Auth();
 
     private ProgressBar progressBar;
-
+   private TextView tv_tip;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_main, container, false);
 
         mWebView = (AdvancedWebView) rootView.findViewById(R.id.webview);
         progressBar = (ProgressBar) rootView.findViewById(R.id.progressbar);
+        tv_tip = (TextView) rootView.findViewById(R.id.tv_tip);
         mWebView.setListener(getActivity(), this);
         mWebView.setMixedContentAllowed(true);
         progressBar.setProgress(0);
@@ -128,6 +125,25 @@ public class WeiOrgNetFragment extends BaseFragment implements AdvancedWebView.L
         });
     }
 
+    private static final int TV_TIP_GONE=1;
+    private Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (tv_tip!=null){
+                tv_tip.setVisibility(View.GONE);
+            }
+        }
+    };
+    private void showTvTip(String content){
+        if (tv_tip!=null){
+            tv_tip.setText(content);
+            tv_tip.setVisibility(View.VISIBLE);
+            handler.removeMessages(TV_TIP_GONE);
+            handler.sendEmptyMessageDelayed(TV_TIP_GONE,2000);
+
+        }
+    }
     @SuppressLint("NewApi")
     @Override
     public void onResume() {
@@ -255,7 +271,7 @@ public class WeiOrgNetFragment extends BaseFragment implements AdvancedWebView.L
 
             if (MyHandleDownload.handleDownload(mContext, url, fileName)) {
                 // download successfully handled
-                String destFile="save to /sdcard/";
+                String destFile="下载文件并保存到/sdcard/";
                 if (url.endsWith("mp3")){
                     destFile+=FilesUtils.DOWNLOAD_MP3;
 
@@ -267,7 +283,7 @@ public class WeiOrgNetFragment extends BaseFragment implements AdvancedWebView.L
                 }else {
                     destFile+=FilesUtils.DOWNLOAD_OTHER;
                 }
-                Toast.makeText(mContext, "下载文件"+destFile + fileName, Toast.LENGTH_SHORT).show();
+                showTvTip(destFile + fileName);
             }
         }
     }

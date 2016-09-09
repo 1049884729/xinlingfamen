@@ -5,9 +5,16 @@
     tools:context="com.xinlingfamen.app.core.home.ResourceFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <include
+        android:id="@+id/loading_retryView"
+        layout="@layout/loading_retry"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="ziyuan download" />
+        android:visibility="gone" />
+
+    <com.handmark.pulltorefresh.library.PullToRefreshExpandableListView
+        android:id="@+id/pull_refresh_expandable_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </FrameLayout>
