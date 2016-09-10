@@ -1,7 +1,6 @@
 package com.golshadi.majid.core.chunkWorker;
 
 
-import com.golshadi.majid.Utils.helper.FileUtils;
 import com.golshadi.majid.core.enums.TaskStates;
 import com.golshadi.majid.core.mainWorker.QueueModerator;
 import com.golshadi.majid.database.ChunksDataSource;
@@ -10,6 +9,7 @@ import com.golshadi.majid.database.elements.Chunk;
 import com.golshadi.majid.database.elements.Task;
 import com.golshadi.majid.report.ReportStructure;
 import com.golshadi.majid.report.listener.DownloadManagerListenerModerator;
+import com.xinlingfamen.app.utils.FilesUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -70,7 +70,7 @@ public class Moderator {
             // get any chunk file size calculate
             for (Chunk chunk : taskChunks) {
             	
-                downloaded = new Long(FileUtils
+                downloaded = new Long(FilesUtils
                         .size(task.save_address, String.valueOf(chunk.id)));
                 totalSize = new Long(chunk.end - chunk.begin + 1);
                 
@@ -191,7 +191,7 @@ public class Moderator {
         // delete chunk row from chunk table
         for (Chunk chunk : taskChunks) {
             chunksDataSource.delete(chunk.id);
-            FileUtils.delete(task.save_address, String.valueOf(chunk.id));
+            FilesUtils.delete(task.save_address, String.valueOf(chunk.id));
         }
 
         // notify to developer------------------------------------------------------------

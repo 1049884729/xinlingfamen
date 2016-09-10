@@ -1,8 +1,8 @@
 package com.golshadi.majid.core.chunkWorker;
 
-import com.golshadi.majid.Utils.helper.FileUtils;
 import com.golshadi.majid.database.elements.Chunk;
 import com.golshadi.majid.database.elements.Task;
+import com.xinlingfamen.app.utils.FilesUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -54,7 +54,7 @@ public class AsyncWorker extends Thread{
             connection.connect();
             
 
-            File cf = new File(FileUtils.address(task.save_address, String.valueOf(chunk.id)));
+            File cf = new File(FilesUtils.address(task.save_address, String.valueOf(chunk.id)));
             // Check response code first to avoid error stream
             int status = connection.getResponseCode();
            	InputStream remoteFileIn;

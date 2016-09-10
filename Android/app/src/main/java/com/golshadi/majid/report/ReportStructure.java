@@ -1,9 +1,10 @@
 package com.golshadi.majid.report;
 
-import com.golshadi.majid.Utils.helper.FileUtils;
 import com.golshadi.majid.core.enums.TaskStates;
 import com.golshadi.majid.database.elements.Chunk;
 import com.golshadi.majid.database.elements.Task;
+import com.xinlingfamen.app.utils.FilesUtils;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -65,7 +66,7 @@ public class ReportStructure {
     	if (task.state != TaskStates.DOWNLOAD_FINISHED) {
 	        int sum = 0;    
 	        for (Chunk chunk : chunks){
-	            this.downloadLength += FileUtils.size(task.save_address, String.valueOf(chunk.id));
+	            this.downloadLength += FilesUtils.size(task.save_address, String.valueOf(chunk.id));
 	        }
 	
 	        if (task.size > 0) {

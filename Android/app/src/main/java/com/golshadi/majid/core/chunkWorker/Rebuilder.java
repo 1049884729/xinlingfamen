@@ -1,9 +1,9 @@
 package com.golshadi.majid.core.chunkWorker;
 
-import com.golshadi.majid.Utils.helper.FileUtils;
 import com.golshadi.majid.database.elements.Chunk;
 import com.golshadi.majid.database.elements.Task;
 import com.golshadi.majid.report.listener.DownloadManagerListener;
+import com.xinlingfamen.app.utils.FilesUtils;
 
 import java.io.*;
 import java.util.List;
@@ -29,7 +29,7 @@ public class Rebuilder extends Thread{
         // notify to developer------------------------------------------------------------
         observer.downloadManagerListener.OnDownloadRebuildStart(task.id);
 
-        File file = FileUtils.create(task.save_address, task.name + "." + task.extension);
+        File file = FilesUtils.create(task.save_address, task.name + "." + task.extension);
 
         FileOutputStream finalFile = null;
         try {
@@ -42,7 +42,7 @@ public class Rebuilder extends Thread{
         int read = 0;
         for (Chunk chunk : taskChunks) {
             FileInputStream chFileIn =
-                    FileUtils.getInputStream(task.save_address, String.valueOf(chunk.id));
+                    FilesUtils.getInputStream(task.save_address, String.valueOf(chunk.id));
 
             try {
                 while (chFileIn!=null&&(read = chFileIn.read(readBuffer)) > 0) {

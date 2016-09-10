@@ -1,11 +1,10 @@
 package com.golshadi.majid.core;
 
-import android.app.Activity;
-import android.content.Context;
-import android.os.Environment;
-import android.util.Log;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.golshadi.majid.Utils.helper.FileUtils;
 import com.golshadi.majid.core.chunkWorker.Moderator;
 import com.golshadi.majid.core.enums.QueueSort;
 import com.golshadi.majid.core.enums.TaskStates;
@@ -21,11 +20,11 @@ import com.golshadi.majid.report.exceptions.QueueDownloadInProgressException;
 import com.golshadi.majid.report.exceptions.QueueDownloadNotStartedException;
 import com.golshadi.majid.report.listener.DownloadManagerListener;
 import com.golshadi.majid.report.listener.DownloadManagerListenerModerator;
+import com.xinlingfamen.app.utils.FilesUtils;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import android.content.Context;
+import android.os.Environment;
+import android.util.Log;
 
 /**
  * Created by Majid Golshadi on 4/10/2014.
@@ -335,14 +334,14 @@ public class DownloadManagerPro {
             List<Chunk> taskChunks =
                     chunksDataSource.chunksRelatedTask(task.id);
             for (Chunk chunk : taskChunks) {
-                FileUtils.delete(task.save_address, String.valueOf(chunk.id));
+                FilesUtils.delete(task.save_address, String.valueOf(chunk.id));
                 chunksDataSource.delete(chunk.id);
             }
 
             if (deleteTaskFile) {
-                long size = FileUtils.size(task.save_address, task.name + "." + task.extension);
+                long size = FilesUtils.size(task.save_address, task.name + "." + task.extension);
                 if (size > 0){
-                    FileUtils.delete(task.save_address, task.name + "." + task.extension);
+                    FilesUtils.delete(task.save_address, task.name + "." + task.extension);
                 }
             }
 
@@ -416,7 +415,7 @@ public class DownloadManagerPro {
         if (isDuplicatedName(saveName)){
             Task task = tasksDataSource.getTaskInfoWithName(saveName);
             tasksDataSource.delete(task.id);
-            FileUtils.delete(task.save_address, task.name + "." + task.extension);
+            FilesUtils.delete(task.save_address, task.name + "." + task.extension);
         }
     }
 }

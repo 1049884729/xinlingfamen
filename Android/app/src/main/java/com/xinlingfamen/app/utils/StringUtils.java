@@ -4,6 +4,10 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by xuff on 2016/9/1.
  */
@@ -64,5 +68,25 @@ public class StringUtils {
             e.printStackTrace();
             return 1;
         }
+    }
+
+    private static SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    public static String longToString(long time){
+       return simpleDateFormat.format(new Date(time));
+    }
+    public static String longToSize(long fileS){
+        String size = "";
+
+            DecimalFormat df = new DecimalFormat("#.00");
+            if (fileS < 1024) {
+                size = df.format((double) fileS) + "BT";
+            } else if (fileS < 1048576) {
+                size = df.format((double) fileS / 1024) + "KB";
+            } else if (fileS < 1073741824) {
+                size = df.format((double) fileS / 1048576) + "MB";
+            } else {
+                size = df.format((double) fileS / 1073741824) +"GB";
+            }
+        return size;
     }
 }

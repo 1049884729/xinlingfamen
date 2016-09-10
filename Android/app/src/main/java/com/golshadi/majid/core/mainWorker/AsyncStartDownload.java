@@ -2,7 +2,6 @@ package com.golshadi.majid.core.mainWorker;
 
 import android.util.Log;
 import android.webkit.MimeTypeMap;
-import com.golshadi.majid.Utils.helper.FileUtils;
 import com.golshadi.majid.appConstants.DispatchEcode;
 import com.golshadi.majid.appConstants.DispatchElevel;
 import com.golshadi.majid.core.chunkWorker.Moderator;
@@ -13,6 +12,7 @@ import com.golshadi.majid.database.TasksDataSource;
 import com.golshadi.majid.database.elements.Chunk;
 import com.golshadi.majid.database.elements.Task;
 import com.golshadi.majid.report.listener.DownloadManagerListenerModerator;
+import com.xinlingfamen.app.utils.FilesUtils;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -171,7 +171,7 @@ public class AsyncStartDownload extends Thread{
 
     private void makeFileForChunks(int firstId, Task task){
         for (int endId = firstId+task.chunks; firstId<endId ; firstId++)
-            FileUtils.create(task.save_address, String.valueOf(firstId));
+            FilesUtils.create(task.save_address, String.valueOf(firstId));
 
     }
 
@@ -180,7 +180,7 @@ public class AsyncStartDownload extends Thread{
         List<Chunk> TaskChunks = chunksDataSource.chunksRelatedTask(task.id);
 
         for (Chunk chunk : TaskChunks ){
-            FileUtils.delete(task.save_address, String.valueOf(chunk.id));
+            FilesUtils.delete(task.save_address, String.valueOf(chunk.id));
             chunksDataSource.delete(chunk.id);
         }
     }
