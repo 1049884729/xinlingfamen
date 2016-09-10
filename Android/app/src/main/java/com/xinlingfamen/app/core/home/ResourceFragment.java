@@ -150,27 +150,31 @@ public class ResourceFragment extends BaseFragment
                         groupBean = new GroupBean();
                         fileType = 0;
                         groupBean.groupName = "文本文件";
+                        groupBean.localPath = "(路径：" + FilesUtils.DOWNLOAD_FILE + ")";
                         childBeanArrayList = addChild(file, fileType);
                         groupBean.groupChildSize = childBeanArrayList == null ? 0 : childBeanArrayList.size();
                         mGroupBeans.add(groupBean);
                         mChildBeans.add(childBeanArrayList);
-
+                        
                     }
                     if (file.getPath().endsWith(FilesUtils.DOWNLOAD_MP3))
                     {
                         groupBean = new GroupBean();
                         groupBean.groupName = "音频文件";
+                        groupBean.localPath = "(路径：" + FilesUtils.DOWNLOAD_MP3 + ")";
                         fileType = 1;
                         childBeanArrayList = addChild(file, fileType);
                         groupBean.groupChildSize = childBeanArrayList == null ? 0 : childBeanArrayList.size();
                         mGroupBeans.add(groupBean);
                         mChildBeans.add(childBeanArrayList);
-
+                        
                     }
                     if (file.getPath().endsWith(FilesUtils.DOWNLOAD_VIDEO))
                     {
                         groupBean = new GroupBean();
                         groupBean.groupName = "视频文件";
+                        groupBean.localPath = "(路径：" + FilesUtils.DOWNLOAD_VIDEO + ")";
+                        
                         fileType = 2;
                         childBeanArrayList = addChild(file, fileType);
                         groupBean.groupChildSize = childBeanArrayList == null ? 0 : childBeanArrayList.size();
@@ -217,9 +221,8 @@ public class ResourceFragment extends BaseFragment
     
     private ArrayList<GroupBean> mGroupBeans = null;
     
-    private class ExpandableListViewAdapter extends BaseExpandableListAdapter {
-        
-
+    private class ExpandableListViewAdapter extends BaseExpandableListAdapter
+    {
         
         @Override
         public int getGroupCount()
@@ -246,22 +249,24 @@ public class ResourceFragment extends BaseFragment
         @Override
         public Object getChild(int i, int i1)
         {
-            ArrayList arrayList=mChildBeans.get(i);
-            if (arrayList==null||arrayList.size()==0)return null;
+            ArrayList arrayList = mChildBeans.get(i);
+            if (arrayList == null || arrayList.size() == 0)
+                return null;
             return arrayList.get(i1);
         }
-
+        
         @Override
-        public long getGroupId(int i) {
+        public long getGroupId(int i)
+        {
             return i;
         }
-
+        
         @Override
-        public long getChildId(int i, int i1) {
+        public long getChildId(int i, int i1)
+        {
             return i1;
         }
-
-
+        
         @Override
         public boolean hasStableIds()
         {
@@ -274,8 +279,10 @@ public class ResourceFragment extends BaseFragment
             view = LayoutInflater.from(mContext).inflate(R.layout.item_expandlist_group_item, null);
             TextView groupName = (TextView)view.findViewById(R.id.groupName);
             TextView groupSize = (TextView)view.findViewById(R.id.groupfile_size);
+            TextView groupLocalPath = (TextView)view.findViewById(R.id.groupLocalPath);
             GroupBean groupBean = (GroupBean)getGroup(i);
             groupName.setText(groupBean.groupName);
+            groupLocalPath.setText(groupBean.localPath);
             groupSize.setText(groupBean.groupChildSize + "个");
             return view;
         }
@@ -288,16 +295,16 @@ public class ResourceFragment extends BaseFragment
             TextView filePath = (TextView)view.findViewById(R.id.file_path);
             ChildBean childBean = (ChildBean)getChild(i, i1);
             fileName.setText(childBean.fileName);
-            filePath.setText(childBean.filePath);
+            filePath.setText(childBean.fileSize);
             return view;
         }
-
+        
         @Override
-        public boolean isChildSelectable(int i, int i1) {
+        public boolean isChildSelectable(int i, int i1)
+        {
             return false;
         }
-
-
+        
     }
     
 }

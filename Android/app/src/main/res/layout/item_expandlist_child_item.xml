@@ -1,18 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@android:color/white"
     android:layout_height="match_parent">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:minHeight="44dp"
-        android:layout_height="wrap_content"
-        android:text="文件名"
-        android:textColor="#333333"
-        android:gravity="center"
-        android:layout_margin="10dp"
-        android:textSize="18sp"
-        android:id="@+id/fileName"/>
     <TextView
         android:layout_width="wrap_content"
         android:minHeight="44dp"
@@ -24,4 +14,17 @@
         android:layout_margin="10dp"
         android:textSize="18sp"
         android:id="@+id/file_path"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:minHeight="44dp"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/file_path"
+
+        android:text="dd"
+        android:textColor="#333333"
+        android:gravity="center|left"
+        android:layout_margin="10dp"
+        android:textSize="18sp"
+        android:id="@+id/fileName"/>
+
 </RelativeLayout>
