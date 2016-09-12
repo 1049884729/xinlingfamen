@@ -307,9 +307,11 @@ public class ResourceFragment extends BaseFragment
             view = LayoutInflater.from(mContext).inflate(R.layout.item_expandlist_child_item, null);
             TextView fileName = (TextView)view.findViewById(R.id.fileName);
             TextView filePath = (TextView)view.findViewById(R.id.file_path);
+            TextView file_time = (TextView)view.findViewById(R.id.file_time);
           final   ChildBean childBean = (ChildBean)getChild(i, i1);
             fileName.setText(childBean.fileName);
             filePath.setText(childBean.fileSize);
+            file_time.setText(childBean.downTime);
 
 
             view.setOnClickListener(new View.OnClickListener() {
