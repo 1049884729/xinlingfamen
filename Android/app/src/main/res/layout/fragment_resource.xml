@@ -1,20 +1,25 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.xinlingfamen.app.core.home.ResourceFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <include
-        android:id="@+id/loading_retryView"
-        layout="@layout/loading_retry"
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
-
+        android:layout_height="30dp"
+        android:id="@+id/tv_tip"
+        android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true"
+        android:textColor="#777777"
+        android:text="下载成功后，请下拉刷新一下，更新资源"
+        android:gravity="center"/>
     <com.handmark.pulltorefresh.library.PullToRefreshExpandableListView
         android:id="@+id/pull_refresh_expandable_list"
         android:layout_width="match_parent"
+        android:layout_above="@+id/tv_tip"
         android:layout_height="match_parent" />
 
-</FrameLayout>
+
+</RelativeLayout>

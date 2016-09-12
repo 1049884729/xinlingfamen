@@ -16,8 +16,10 @@ import com.xinlingfamen.app.core.modules.GroupBean;
 import com.xinlingfamen.app.utils.FilesUtils;
 import com.xinlingfamen.app.utils.StringUtils;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.DataSetObserver;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -69,11 +71,23 @@ public class ResourceFragment extends BaseFragment
             }
         });
         
-        // mAdapter = new SimpleExpandableListAdapter(mContext, groupData,
-        // android.R.layout.simple_expandable_list_item_1,
-        // new String[] {KEY}, new int[] {android.R.id.text1}, childData,
-        // android.R.layout.simple_expandable_list_item_2, new String[] {KEY}, new int[] {android.R.id.text1});
-        // mPullRefreshListView.getRefreshableView().setAdapter(mAdapter);
+//        mPullRefreshListView.getRefreshableView().setOnChildClickListener(new ExpandableListView.OnChildClickListener()
+//        {
+//            @Override
+//            public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l)
+//            {
+//              ExpandableListViewAdapter expandableListViewAdapter= (ExpandableListViewAdapter) expandableListView.getExpandableListAdapter();
+//                ChildBean childBean = (ChildBean)expandableListViewAdapter.getChild(i, i1);
+//                Toast.makeText(mContext,childBean.fileName,Toast.LENGTH_LONG).show();
+//                /**
+//                 * 0 :file 1:mp3 2:video
+//                 */
+//
+//                return true;
+//
+//            }
+//
+//        });
         initDataFromLocalDirs();
         return parentView;
         
@@ -293,16 +307,51 @@ public class ResourceFragment extends BaseFragment
             view = LayoutInflater.from(mContext).inflate(R.layout.item_expandlist_child_item, null);
             TextView fileName = (TextView)view.findViewById(R.id.fileName);
             TextView filePath = (TextView)view.findViewById(R.id.file_path);
-            ChildBean childBean = (ChildBean)getChild(i, i1);
+          final   ChildBean childBean = (ChildBean)getChild(i, i1);
             fileName.setText(childBean.fileName);
             filePath.setText(childBean.fileSize);
+
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try {
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        intent.addCategory(Intent.CATEGORY_DEFAULT);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        Uri uri = Uri.fromFile(new File(childBean.filePath));
+                        if (childBean.type == 0)
+                        {
+                            if (childBean.fileName.toLowerCase().endsWith(".pdf"))
+                            {
+                                intent.setDataAndType(uri, "application/pdf");
+                            }
+                            else
+                            {
+                                intent.setDataAndType(uri, "text/plain");
+                            }
+                        }
+                        else if (childBean.type == 1)
+                        {
+                            intent.setDataAndType(uri, "audio/*");
+                        }
+                        else if (childBean.type == 2)
+                        {
+                            intent.setDataAndType(uri, "video/*");
+                        }
+                        startActivity(intent);
+                    } catch (Exception e) {
+                        Toast.makeText(mContext,"请确认一下本地是否有相应的程序能打开此文件\n 如果没有，请下载一个",Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
             return view;
         }
         
         @Override
         public boolean isChildSelectable(int i, int i1)
         {
-            return false;
+            return true;
         }
         
     }
