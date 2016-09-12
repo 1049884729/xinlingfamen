@@ -13,5 +13,6 @@
     <color name="block_column_2">#ffdf1831</color>
     <color name="block_column_3">#ff009939</color>
     <color name="textUnselected">#333333</color>
+    <color name="grey">#707070</color>
 
 </resources>

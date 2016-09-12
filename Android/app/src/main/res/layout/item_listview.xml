@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+        <TextView
+            android:id="@+id/tv_Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/actionbar_height"
+            android:layout_centerVertical="true"
+           android:layout_marginLeft="@dimen/body_padding_medium"
+            android:drawablePadding="@dimen/intro_margin_5"
+            android:gravity="center_vertical"
+            android:text="我的优惠券"
+            android:textColor="@color/grey"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:drawablePadding="@dimen/intro_margin_5"
+            android:drawableRight="@drawable/arrow_right"
+            android:textColor="@color/grey"
+            android:textSize="18sp" />
+
+</RelativeLayout>

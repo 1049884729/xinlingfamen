@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="mine_list">
+        <item>信息公告</item>
+        <item>检查更新</item>
+        <item>帮助</item>
+        <item>意见反馈</item>
+        <item>关于</item>
+    </string-array>
+
+</resources>
