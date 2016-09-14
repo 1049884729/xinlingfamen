@@ -5,9 +5,6 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
-
-import com.j256.ormlite.stmt.query.In;
-import com.xinlingfamen.app.BaseActivity;
 import com.xinlingfamen.app.R;
 
 /**
@@ -15,6 +12,10 @@ import com.xinlingfamen.app.R;
  */
 public class ContentTxtActivity extends AppCompatActivity {
     private TextView titleView,contentView;
+
+    public static final String KEY_TITLE="keyTitle";
+    public static final String KEY_CONTENT="keyContent";
+    public static final String KEY_URITYPE="keyUriType";//请求类型
     @Override
     public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
@@ -31,6 +32,16 @@ public class ContentTxtActivity extends AppCompatActivity {
         setData(intent);
     }
     private void setData(Intent intent){
+        if (intent.hasExtra(KEY_TITLE)){
+            titleView.setText(intent.getStringExtra(KEY_TITLE));
+        }
+
+        if (intent.hasExtra(KEY_CONTENT)){
+            contentView.setText(intent.getStringExtra(KEY_CONTENT));
+        }
+       else if (intent.hasExtra(KEY_URITYPE)){
+            titleView.setText(intent.getStringExtra(KEY_URITYPE));
+        }
 
     }
 
