@@ -8,8 +8,16 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:background="#a3a3a3"
-        android:layout_height="44dp">
+        android:background="#00ff00"
+        android:layout_height="48dp">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:minWidth="40dp"
+            android:scaleType="fitCenter"
+            android:layout_height="match_parent"
+            android:id="@+id/img_back"
+            android:padding="10dp"
+            android:src="@drawable/back"/>
 
         <TextView
             android:id="@+id/tv_title"
@@ -38,6 +46,7 @@
                 android:layout_width="wrap_content"
                 android:id="@+id/tv_content"
                 android:autoLink="all"
+                android:textSize="18sp"
                 android:lineSpacingExtra="@dimen/intro_margin_5"
                 android:layout_height="wrap_content"
                 android:textColor="@color/grey"

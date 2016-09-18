@@ -27,9 +27,12 @@ import com.xinlingfamen.app.R;
 import com.xinlingfamen.app.config.Constants;
 import com.xinlingfamen.app.core.ContentTxtActivity;
 import com.xinlingfamen.app.core.modules.AppUpdateBean;
+import com.xinlingfamen.app.core.modules.MyConfigBean;
+import com.xinlingfamen.app.core.modules.WeiOrgNetBean;
 import com.xinlingfamen.app.qiniu.Auth;
 import com.xinlingfamen.app.utils.FilesUtils;
 import com.xinlingfamen.app.utils.HttpUtil;
+import com.xinlingfamen.app.utils.SharePrefenceUtils;
 import com.xinlingfamen.app.utils.StringUtils;
 
 import java.io.File;
@@ -51,6 +54,8 @@ public class MineFragment extends BaseFragment implements DownloadManagerListene
     
     private ListView listview;
     
+    private MyConfigBean myConfigBean;
+    
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState)
     {
@@ -58,6 +63,7 @@ public class MineFragment extends BaseFragment implements DownloadManagerListene
         parentView = inflater.inflate(R.layout.fragment_mine, container, false);
         listview = (ListView)parentView.findViewById(R.id.listview);
         listview.setAdapter(new MyListAdapter(mContext.getResources().getStringArray(R.array.mine_list)));
+        getData();
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
@@ -74,20 +80,21 @@ public class MineFragment extends BaseFragment implements DownloadManagerListene
                     {
                         case 0:// 信息公告
                             title = "信息公告";
-                            content =
-                                "中央军委联勤保障部队成立大会今天在北京八一大楼隆重举行。中共中央总书记、国家主席、中央军委主席习近平向武汉联勤保障基地和无锡、桂林、西宁、沈阳、郑州联勤保障中心授予军旗并致训词，代表党中央和中央军委向联勤保障部队全体指战员致以热烈的祝贺。他强调，要牢记使命、勇挑重担，以党在新形势下的强军目标为引领，深入贯彻新形势下军事战略方针，推进政治建军、改革强军、依法治军，按照联合作战、联合训练、联合保障的要求加快部队建设，努力建设一支强大的现代化联勤保障部队。";
+                            if (myConfigBean!=null)content=myConfigBean.publicInfo;
                             break;
                         case 2:// 帮助说明
                             title = "帮助说明";
-                            
+                            if (myConfigBean!=null)content=myConfigBean.helpContent;
+
                             break;
                         case 3:// 意见反馈
                             title = "意见反馈";
-                            content ="email@163.com";
+                            if (myConfigBean!=null)content=myConfigBean.returnToemail;
+
                             break;
                         case 4:
                             title = "关于";
-                            
+                            if (myConfigBean!=null)content=myConfigBean.about;
                             break;
                     }
                     detailIntent(title, content, urlType);
@@ -288,5 +295,55 @@ public class MineFragment extends BaseFragment implements DownloadManagerListene
             }
         });
         
+    }
+    
+    private Auth auth = new Auth();
+    
+    private void getData()
+    {
+        HttpUtil.get(auth.privateDownloadUrl(Constants.URL_myConfig), new AsyncHttpResponseHandler()
+        {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody)
+            {
+                try
+                {
+                    String res = new String(responseBody, "UTF-8");
+                    Gson gson = new Gson();
+                    myConfigBean = gson.fromJson(res, MyConfigBean.class);
+                    int currentVersion = SharePrefenceUtils.getInstance(mContext)
+                        .getIntPreference(Constants.SharePreKeys.myConfig_VERSION);
+                    if (myConfigBean.configVersion != currentVersion)
+                    {
+                        SharePrefenceUtils.getInstance(mContext)
+                            .setStringPreference(Constants.SharePreKeys.myConfig_VALUE, res);
+                        SharePrefenceUtils.getInstance(mContext)
+                            .setIntPreference(Constants.SharePreKeys.myConfig_VERSION, myConfigBean.configVersion);
+                    }
+                }
+                catch (UnsupportedEncodingException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error)
+            {
+                
+                Gson gson = new Gson();
+                int currentVersion =
+                    SharePrefenceUtils.getInstance(mContext).getIntPreference(Constants.SharePreKeys.myConfig_VERSION);
+                if (0 != currentVersion)
+                {
+                    myConfigBean = gson.fromJson(SharePrefenceUtils.getInstance(mContext)
+                        .getStringPreference(Constants.SharePreKeys.myConfig_VALUE), MyConfigBean.class);
+                }
+                else
+                {
+                    myConfigBean = gson.fromJson(Constants.MYCONFIG_CONTENT, MyConfigBean.class);
+                }
+            }
+        });
     }
 }

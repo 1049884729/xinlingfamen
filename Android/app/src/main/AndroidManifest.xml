@@ -28,6 +28,7 @@
         <activity
             android:name=".core.welcome.WelcomeActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleInstance"
             android:theme="@style/Theme.Start">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -52,6 +53,7 @@
         <activity android:name=".core.home.HomeTabActivity"
             android:configChanges="layoutDirection|screenSize"
             android:screenOrientation="portrait"
+            android:launchMode="singleInstance"
 
             >
             <intent-filter>
@@ -60,7 +62,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".core.ContentTxtActivity" android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity android:name=".core.ContentTxtActivity" android:launchMode="singleTask"/>
     </application>
 
 </manifest>
