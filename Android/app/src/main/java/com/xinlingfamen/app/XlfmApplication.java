@@ -32,6 +32,8 @@ public class XlfmApplication extends Application
     {
         MobclickAgent.setScenarioType(context, MobclickAgent.EScenarioType.E_UM_NORMAL);
         MobclickAgent.enableEncrypt(true);// 6.0.0版本及以后
+        CrashHandler crashHandler = CrashHandler.getInstance();
+        crashHandler.init(this);
     }
     
     private void initDatabase()

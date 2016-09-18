@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">UMENG SDK</string>
+    <string name="app_name">心灵慈航</string>
     <string name="umeng_example_home_btn_analytics">Analytics</string>
     <string name="umeng_example_home_btn_xp">XP</string>
     <string name="umeng_example_home_btn_ad">Ads</string>

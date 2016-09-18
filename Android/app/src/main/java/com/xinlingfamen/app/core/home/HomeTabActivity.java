@@ -86,18 +86,18 @@ public class HomeTabActivity extends BaseActivity
                 
                 break;
             case 2:
-                communityFragment = (CommunityFragment)fragmentManager.findFragmentByTag("communityFragment");
-                if (communityFragment == null)
-                {
-                    communityFragment = new CommunityFragment();
-                    fragmentTransaction.add(R.id.main_fragment, communityFragment, "communityFragment");
-                    
-                }
-                else
-                {
-                    fragmentTransaction.show(communityFragment);
-                }
-                break;
+//                communityFragment = (CommunityFragment)fragmentManager.findFragmentByTag("communityFragment");
+//                if (communityFragment == null)
+//                {
+//                    communityFragment = new CommunityFragment();
+//                    fragmentTransaction.add(R.id.main_fragment, communityFragment, "communityFragment");
+//
+//                }
+//                else
+//                {
+//                    fragmentTransaction.show(communityFragment);
+//                }
+//                break;
             case 3:
                 mineFragment = (MineFragment)fragmentManager.findFragmentByTag("mineFragment");
                 if (mineFragment == null)

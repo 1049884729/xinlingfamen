@@ -32,14 +32,14 @@
             android:gravity="center"
             android:text="已下载" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="@dimen/bottom_tab_tvSize"
+        <!--<TextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center"-->
+            <!--android:textSize="@dimen/bottom_tab_tvSize"-->
 
-            android:text="通知" />
+            <!--android:text="通知" />-->
 
         <TextView
             android:layout_width="0dp"
