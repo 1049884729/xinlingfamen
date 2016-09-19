@@ -9,6 +9,7 @@ import com.golshadi.majid.database.DatabaseHelper;
 import com.golshadi.majid.database.TasksDataSource;
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.umeng.analytics.MobclickAgent;
 import com.xinlingfamen.app.BaseFragment;
 import com.xinlingfamen.app.R;
 import com.xinlingfamen.app.config.Constants;
@@ -149,15 +150,20 @@ public class WeiOrgNetFragment extends BaseFragment implements AdvancedWebView.L
     public void onResume() {
         super.onResume();
         mWebView.onResume();
+        MobclickAgent.onPageStart(TAG); //统计页面，"MainScreen"为页面名称，可自定义
+
         // ...
     }
 
+  private final String TAG=WeiOrgNetFragment.class.getSimpleName();
     @SuppressLint("NewApi")
     @Override
     public void onPause() {
         mWebView.onPause();
         // ...
         super.onPause();
+        MobclickAgent.onPageEnd(TAG);
+
     }
 
     @Override

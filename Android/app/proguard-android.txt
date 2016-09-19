@@ -1,0 +1,373 @@
+# Add project specific ProGuard rules here.
+# By default, the flags in this file are appended to flags specified
+# in D:\Java\Android_Sdk/tools/proguard/proguard-android.txt
+# You can edit the include path and order by changing the proguardFiles
+# directive in build.gradle.
+#
+# For more details, see
+#   http://developer.android.com/guide/developing/tools/proguard.html
+
+# Add any project specific keep options here:
+
+# If your project uses WebView with JS, uncomment the following
+# and specify the fully qualified class name to the JavaScript interface
+# class:
+#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+#   public *;
+#}
+
+-dontusemixedcaseclassnames
+-dontskipnonpubliclibraryclasses
+-verbose
+-dontoptimize
+-optimizationpasses 8
+-dontpreverify
+-overloadaggressively
+-ignorewarnings
+-keepclassmembers class * {
+   public <init> (org.json.JSONObject);
+}
+-keep public class com.xinlingfamen.app.R$*{
+public static final int *;
+}
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+-keep class * extends android.webkit.WebChromeClient { *; }
+-dontwarn im.delight.android.webview.**
+
+
+
+
+-keepattributes *Annotation*
+-keep public class com.google.vending.licensing.ILicensingService
+-keep public class com.android.vending.licensing.ILicensingService
+
+# For native methods, see http://proguard.sourceforge.net/manual/examples.html#native
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+-keep class * extends android.webkit.WebChromeClient { *; }
+-dontwarn im.delight.android.webview.**
+-keepclassmembers public class * extends android.view.View {
+   void set*(***);
+   *** get*();
+}
+
+# We want to keep methods in Activity that could be used in the XML attribute onClick
+-keepclassmembers class * extends android.app.Activity {
+   public void *(android.view.View);
+}
+
+# For enumeration classes, see http://proguard.sourceforge.net/manual/examples.html#enumerations
+# 如果您使用5.0.0及以上版本的SDK
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+-dontwarn android.support.**
+
+#gson 解析的问题
+-keepattributes Signature
+ # Gson specific classes
+ -keep class sun.misc.Unsafe { *; }
+ -keep class com.google.gson.** { *; }
+-dontwarn com.squareup.okhttp.**
+
+#友盟分享，登陆
+-dontshrink
+-dontoptimize
+-dontwarn com.google.android.maps.**
+-dontwarn android.webkit.WebView
+-dontwarn com.umeng.**
+-dontwarn com.tencent.weibo.sdk.**
+-dontwarn com.facebook.**
+-keep enum com.facebook.**
+-keepattributes Exceptions,InnerClasses,Signature
+-keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable
+-keep public interface com.facebook.**
+-keep public interface com.tencent.**
+-keep public interface com.umeng.socialize.**
+-keep public interface com.umeng.socialize.sensor.**
+-keep public interface com.umeng.scrshot.**
+-keep public class com.umeng.socialize.* {*;}
+-keep public class javax.**
+-keep public class android.webkit.**
+-keep class com.facebook.**
+-keep class com.umeng.scrshot.**
+-keep public class com.tencent.** {*;}
+-keep class com.umeng.socialize.sensor.**
+-keep class com.tencent.mm.sdk.modelmsg.WXMediaMessage {*;}
+-keep class com.tencent.mm.sdk.modelmsg.** implements com.tencent.mm.sdk.modelmsg.WXMediaMessage$IMediaObject {*;}
+-keep class im.yixin.sdk.api.YXMessage {*;}
+-keep class im.yixin.sdk.api.** implements im.yixin.sdk.api.YXMessage$YXMessageData{*;}
+-dontshrink
+-dontoptimize
+-dontwarn com.google.android.maps.**
+-dontwarn android.webkit.WebView
+-dontwarn com.umeng.**
+-dontwarn com.tencent.weibo.sdk.**
+-dontwarn com.facebook.**
+-keep enum com.facebook.**
+-keepattributes Exceptions,InnerClasses,Signature
+-keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable
+-keep public interface com.facebook.**
+-keep public interface com.tencent.**
+-keep public interface com.umeng.socialize.**
+-keep public interface com.umeng.socialize.sensor.**
+-keep public interface com.umeng.scrshot.**
+-keep public class com.umeng.socialize.* {*;}
+-keep public class javax.**
+-keep public class android.webkit.**
+-keep public class com.chebao.autonavilibrary.bean.*{*;}
+
+-keep class com.facebook.**
+-keep class com.umeng.scrshot.**
+-keep public class com.tencent.** {*;}
+-keep class com.umeng.socialize.sensor.**
+-keep class com.tencent.mm.sdk.modelmsg.WXMediaMessage {*;}
+-keep class com.tencent.mm.sdk.modelmsg.** implements com.tencent.mm.sdk.modelmsg.WXMediaMessage$IMediaObject {*;}
+-keep class im.yixin.sdk.api.YXMessage {*;}
+-keep class im.yixin.sdk.api.** implements im.yixin.sdk.api.YXMessage$YXMessageData{*;}
+-keepclassmembers class * {
+   public <init>(org.json.JSONObject);
+}
+
+-keep class com.umeng.**
+
+-keep public class com.idea.fifaalarmclock.app.R$*{
+    public static final int *;
+}
+
+-keep public class com.umeng.fb.ui.ThreadView {
+}
+
+-dontwarn com.umeng.**
+
+-dontwarn org.apache.commons.**
+
+-keep public class * extends com.umeng.**
+
+-keep class com.umeng.** {*; }
+
+# 友盟统计
+-keepclassmembers class * {
+   public <init> (org.json.JSONObject);
+}
+
+##里程宝混淆编辑
+#-keep public class cn.mobileteam.cbclient.R$*{
+#    public static final int *;
+#}
+
+-dontwarn com.squareup.okhttp.**
+
+#gson 解析的问题
+-keepattributes Signature
+# Gson specific classes
+-keep class sun.misc.Unsafe { *; }
+-keep class com.google.gson.** { *; }
+
+ #环信
+ -keep class com.easemob.** {*;}
+ -keep class org.jivesoftware.** {*;}
+ -keep class org.apache.** {*;}
+ -dontwarn  com.easemob.**
+ #2.0.9后的不需要加下面这个keep
+ #-keep class org.xbill.DNS.** {*;}
+ #另外，demo中发送表情的时候使用到反射，需要keep SmileUtils
+ -keep class com.easemob.chatuidemo.utils.SmileUtils {*;}
+ #注意前面的包名，如果把这个类复制到自己的项目底下，比如放在com.example.utils底下，应该这么写(实际要去掉#)
+ #-keep class com.example.utils.SmileUtils {*;}
+ #如果使用easeui库，需要这么写
+ -keep class com.easemob.easeui.utils.EaseSmileUtils {*;}
+
+#高德地图相关混淆文件
+
+ #3D 地图
+ -keep   class com.amap.api.mapcore.**{*;}
+ -keep   class com.amap.api.maps.**{*;}
+ -keep   class com.autonavi.amap.mapcore.*{*;}
+
+ # 定位
+ -keep class com.amap.api.location.**{*;}
+ -keep class com.amap.api.fence.**{*;}
+ -keep class com.autonavi.aps.amapapi.model.**{*;}
+
+ #搜索
+ -keep   class com.amap.api.services.**{*;}
+
+ #2D地图
+ -keep class com.amap.api.maps2d.**{*;}
+ -keep class com.amap.api.mapcore2d.**{*;}
+
+ #导航
+ -keep class com.amap.api.navi.**{*;}
+ -keep class com.autonavi.**{*;}
+
+#Alipay支付宝
+
+-keep class com.alipay.sdk.app.H5PayActivity { <init>(...); }
+
+# view res/layout/pay_main.xml #generated:15
+-keep class com.alipay.sdk.pay.demo.ExternalFragment { <init>(...); }
+
+# view AndroidManifest.xml #generated:40
+-keep class com.alipay.sdk.pay.demo.H5PayDemoActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:30
+-keep class com.alipay.sdk.pay.demo.PayDemoActivity { <init>(...); }
+
+# onClick res/layout/pay_external.xml #generated:92
+-keepclassmembers class * { *** h5Pay(...); }
+
+# onClick res/layout/pay_external.xml #generated:83
+-keepclassmembers class * { *** pay(...); }
+
+# xUtils
+-keep class * extends java.lang.annotation.Annotation { *; }
+-keep class * extends com.example.demo.EntityBase { *; }
+
+# eventbus
+-keepclassmembers class ** {
+    public void onEvent*(**);
+}
+
+
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+    **[] $VALUES;
+    public *;
+}
+
+
+##umeng
+-dontshrink
+-dontoptimize
+-dontwarn com.google.android.maps.**
+-dontwarn android.webkit.WebView
+-dontwarn com.umeng.**
+-dontwarn com.tencent.weibo.sdk.**
+-dontwarn com.facebook.**
+
+
+-keep enum com.facebook.**
+-keepattributes Exceptions,InnerClasses,Signature
+-keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable
+
+-keep public interface com.facebook.**
+-keep public interface com.tencent.**
+-keep public interface com.umeng.socialize.**
+-keep public interface com.umeng.socialize.sensor.**
+-keep public interface com.umeng.scrshot.**
+
+-keep public class com.umeng.socialize.* {*;}
+-keep public class javax.**
+-keep public class android.webkit.**
+
+-keep class com.facebook.**
+-keep class com.facebook.** { *; }
+-keep class com.umeng.scrshot.**
+-keep public class com.tencent.** {*;}
+-keep class com.umeng.socialize.sensor.**
+-keep class com.umeng.socialize.handler.**
+-keep class com.umeng.socialize.handler.*
+-keep class com.tencent.mm.sdk.modelmsg.WXMediaMessage {*;}
+-keep class com.tencent.mm.sdk.modelmsg.** implements com.tencent.mm.sdk.modelmsg.WXMediaMessage$IMediaObject {*;}
+
+-keep class im.yixin.sdk.api.YXMessage {*;}
+-keep class im.yixin.sdk.api.** implements im.yixin.sdk.api.YXMessage$YXMessageData{*;}
+
+-dontwarn twitter4j.**
+-keep class twitter4j.** { *; }
+
+-keep class com.tencent.** {*;}
+-dontwarn com.tencent.**
+-keep public class com.umeng.soexample.R$*{
+    public static final int *;
+}
+-keep public class com.umeng.soexample.R$*{
+    public static final int *;
+}
+-keep class com.tencent.open.TDialog$*
+-keep class com.tencent.open.TDialog$* {*;}
+-keep class com.tencent.open.PKDialog
+-keep class com.tencent.open.PKDialog {*;}
+-keep class com.tencent.open.PKDialog$*
+-keep class com.tencent.open.PKDialog$* {*;}
+
+-keep class com.sina.** {*;}
+-dontwarn com.sina.**
+-keep class  com.alipay.share.sdk.** {
+   *;
+}
+-keepnames class * implements android.os.Parcelable {
+    public static final ** CREATOR;
+}
+-keep class com.linkedin.** { *; }
+-keepattributes Signature
+
+
+-dontusemixedcaseclassnames
+-dontskipnonpubliclibraryclasses
+-dontnote
+-verbose
+
+-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Application
+-keep public class * extends android.app.Service
+-keep public class * extends android.app.IntentService
+-keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.content.ContentProvider
+-keep public class * extends android.app.backup.BackupAgentHelper
+-keep public class * extends android.preference.Preference
+-keep public class com.android.vending.licensing.ILicensingService
+#==================gson==========================
+-dontwarn com.google.**
+-keep class com.google.gson.** {*;}
+
+#==================protobuf======================
+-dontwarn com.google.**
+-keep class com.google.protobuf.** {*;}
+-dontwarn cn.jpush.**
+-keep class cn.jpush.** { *; }
+
+
+-keep class com.marswin89.marsdaemon.NativeDaemonBase{*;}
+-keep class com.marswin89.marsdaemon.nativ.NativeDaemonAPI20{*;}
+-keep class com.marswin89.marsdaemon.nativ.NativeDaemonAPI21{*;}
+-keep class com.marswin89.marsdaemon.DaemonApplication{*;}
+-keep class com.marswin89.marsdaemon.DaemonClient{*;}
+-keepattributes Exceptions,InnerClasses,...
+-keep class com.marswin89.marsdaemon.DaemonConfigurations{*;}
+-keep class com.marswin89.marsdaemon.DaemonConfigurations$*{*;}
+-dontwarn com.taobao.**
+-dontwarn anet.channel.**
+-dontwarn anetwork.channel.**
+-dontwarn org.android.**
+-dontwarn org.apache.thrift.**
+-dontwarn com.xiaomi.**
+-dontwarn com.huawei.**
+
+-keepattributes *Annotation*
+
+-keep class com.taobao.** {*;}
+-keep class org.android.** {*;}
+-keep class anet.channel.** {*;}
+-keep class com.umeng.** {*;}
+-keep class com.xiaomi.** {*;}
+-keep class com.huawei.** {*;}
+-keep class org.apache.thrift.** {*;}
+
+-keep public class **.R$*{
+   public static final int *;
+}
+
+
+

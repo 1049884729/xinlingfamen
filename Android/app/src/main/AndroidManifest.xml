@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.xinlingfamen.app">
-
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.xinlingfamen.app" >
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -11,6 +11,11 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.CAPTURE_VIDEO_OUTPUT" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-sdk
+        android:minSdkVersion="10"
+        android:targetSdkVersion="23"
+        tools:overrideLibrary="com.umeng.message.lib" />
+
     <application
         android:name=".XlfmApplication"
         android:allowBackup="true"
@@ -24,6 +29,9 @@
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="ChannelID" />
+        <meta-data
+            android:name="UMENG_MESSAGE_SECRET"
+            android:value="43610c730cb0ea0060f061fbd6679e10"/>
 
         <activity
             android:name=".core.welcome.WelcomeActivity"

@@ -8,6 +8,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
+import com.umeng.message.PushAgent;
+
 import java.util.List;
 
 /**
@@ -21,6 +23,8 @@ public class BaseActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         fragmentManager = getSupportFragmentManager();
         mContext=this;
+        PushAgent.getInstance(mContext).onAppStart();
+
     }
 
     protected FragmentManager fragmentManager;

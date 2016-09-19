@@ -14,12 +14,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.xinlingfamen.app.BaseActivity;
 import com.xinlingfamen.app.R;
 
 /**
  * Created by xuff on 2016/9/12.
  */
-public class ContentTxtActivity extends Activity
+public class ContentTxtActivity extends BaseActivity
 {
     private TextView titleView, contentView;
     

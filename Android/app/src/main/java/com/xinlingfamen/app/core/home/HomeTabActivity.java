@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.umeng.analytics.MobclickAgent;
 import com.xinlingfamen.app.BaseActivity;
 import com.xinlingfamen.app.R;
 
@@ -217,4 +218,14 @@ public class HomeTabActivity extends BaseActivity
             }
         }
     }
+
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);       //统计时长
+    }
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
 }

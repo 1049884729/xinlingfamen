@@ -22,6 +22,7 @@ import com.golshadi.majid.report.listener.DownloadManagerListener;
 import com.google.gson.Gson;
 import com.j256.ormlite.stmt.query.In;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.umeng.analytics.MobclickAgent;
 import com.xinlingfamen.app.BaseFragment;
 import com.xinlingfamen.app.R;
 import com.xinlingfamen.app.config.Constants;
@@ -80,21 +81,25 @@ public class MineFragment extends BaseFragment implements DownloadManagerListene
                     {
                         case 0:// 信息公告
                             title = "信息公告";
-                            if (myConfigBean!=null)content=myConfigBean.publicInfo;
+                            if (myConfigBean != null)
+                                content = myConfigBean.publicInfo;
                             break;
                         case 2:// 帮助说明
                             title = "帮助说明";
-                            if (myConfigBean!=null)content=myConfigBean.helpContent;
-
+                            if (myConfigBean != null)
+                                content = myConfigBean.helpContent;
+                            
                             break;
                         case 3:// 意见反馈
                             title = "意见反馈";
-                            if (myConfigBean!=null)content=myConfigBean.returnToemail;
-
+                            if (myConfigBean != null)
+                                content = myConfigBean.returnToemail;
+                            
                             break;
                         case 4:
                             title = "关于";
-                            if (myConfigBean!=null)content=myConfigBean.about;
+                            if (myConfigBean != null)
+                                content = myConfigBean.about;
                             break;
                     }
                     detailIntent(title, content, urlType);
@@ -346,4 +351,19 @@ public class MineFragment extends BaseFragment implements DownloadManagerListene
             }
         });
     }
+    
+    private final String TAG = MineFragment.class.getSimpleName();
+    
+    public void onResume()
+    {
+        super.onResume();
+        MobclickAgent.onPageStart(TAG); // 统计页面，"MainScreen"为页面名称，可自定义
+    }
+    
+    public void onPause()
+    {
+        super.onPause();
+        MobclickAgent.onPageEnd(TAG);
+    }
+    
 }

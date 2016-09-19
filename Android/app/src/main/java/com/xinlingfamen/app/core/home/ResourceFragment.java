@@ -9,6 +9,7 @@ import java.util.Map;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshExpandableListView;
+import com.umeng.analytics.MobclickAgent;
 import com.xinlingfamen.app.BaseFragment;
 import com.xinlingfamen.app.R;
 import com.xinlingfamen.app.core.modules.ChildBean;
@@ -356,6 +357,16 @@ public class ResourceFragment extends BaseFragment
             return true;
         }
         
+    }
+    private final String TAG=ResourceFragment.class.getSimpleName();
+
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart(TAG); //统计页面，"MainScreen"为页面名称，可自定义
+    }
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd(TAG);
     }
     
 }
