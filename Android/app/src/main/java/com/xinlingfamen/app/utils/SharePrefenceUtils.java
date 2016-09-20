@@ -75,4 +75,23 @@ public class SharePrefenceUtils
         
         sharedPreferences.edit().putString(key, value).commit();
     }
+
+    /**
+     * 获取默认的字符串值
+     *
+     * @param context
+     * @param defaultvalue
+     * @return
+     */
+    public boolean getBooleanPreference(String key,boolean defaultvalue)
+    {
+
+        return sharedPreferences.getBoolean(key, defaultvalue);
+    }
+
+    public void setBooleanPreference(String key, boolean value)
+    {
+
+        sharedPreferences.edit().putBoolean(key, value).commit();
+    }
 }

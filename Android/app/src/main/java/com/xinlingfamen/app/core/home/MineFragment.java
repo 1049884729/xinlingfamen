@@ -13,9 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.golshadi.majid.core.DownloadManagerPro;
 import com.golshadi.majid.report.listener.DownloadManagerListener;
@@ -23,6 +26,8 @@ import com.google.gson.Gson;
 import com.j256.ormlite.stmt.query.In;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.message.IUmengCallback;
+import com.umeng.message.PushAgent;
 import com.xinlingfamen.app.BaseFragment;
 import com.xinlingfamen.app.R;
 import com.xinlingfamen.app.config.Constants;
@@ -45,7 +50,7 @@ import cz.msebera.android.httpclient.Header;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MineFragment extends BaseFragment implements DownloadManagerListener
+public class MineFragment extends BaseFragment implements DownloadManagerListener, View.OnClickListener
 {
     
     public MineFragment()
@@ -53,61 +58,86 @@ public class MineFragment extends BaseFragment implements DownloadManagerListene
         // Required empty public constructor
     }
     
-    private ListView listview;
-    
     private MyConfigBean myConfigBean;
+    
+    private ToggleButton toggleButton;
+    
+    private RelativeLayout rl_exit, rl_about, rl_returnback, rl_help, rl_checkAppUpdate, rl_commonInfo;
+    
+    private SharePrefenceUtils sharePrefenceUtils;
     
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
         parentView = inflater.inflate(R.layout.fragment_mine, container, false);
-        listview = (ListView)parentView.findViewById(R.id.listview);
-        listview.setAdapter(new MyListAdapter(mContext.getResources().getStringArray(R.array.mine_list)));
-        getData();
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        toggleButton = (ToggleButton)parentView.findViewById(R.id.toggleButton);
+        rl_returnback = (RelativeLayout)parentView.findViewById(R.id.rl_returnback);
+        rl_about = (RelativeLayout)parentView.findViewById(R.id.rl_about);
+        rl_help = (RelativeLayout)parentView.findViewById(R.id.rl_help);
+        rl_commonInfo = (RelativeLayout)parentView.findViewById(R.id.rl_commonInfo);
+        rl_checkAppUpdate = (RelativeLayout)parentView.findViewById(R.id.rl_checkAppUpdate);
+        rl_exit = (RelativeLayout)parentView.findViewById(R.id.rl_exit);
+        rl_about.setOnClickListener(this);
+        rl_exit.setOnClickListener(this);
+        rl_returnback.setOnClickListener(this);
+        rl_help.setOnClickListener(this);
+        rl_commonInfo.setOnClickListener(this);
+        rl_checkAppUpdate.setOnClickListener(this);
+        sharePrefenceUtils = SharePrefenceUtils.getInstance(mContext);
+        setToggleButtonValue(sharePrefenceUtils.getBooleanPreference(Constants.SharePreKeys.ToggleButton_VALUE, true));
+        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b)
             {
-                if (i == 1)
-                {
-                    checkUpdateApp();
-                }
-                else
-                {
-                    String title = null, content = null, urlType = null;
-                    switch (i)
-                    {
-                        case 0:// 信息公告
-                            title = "信息公告";
-                            if (myConfigBean != null)
-                                content = myConfigBean.publicInfo;
-                            break;
-                        case 2:// 帮助说明
-                            title = "帮助说明";
-                            if (myConfigBean != null)
-                                content = myConfigBean.helpContent;
-                            
-                            break;
-                        case 3:// 意见反馈
-                            title = "意见反馈";
-                            if (myConfigBean != null)
-                                content = myConfigBean.returnToemail;
-                            
-                            break;
-                        case 4:
-                            title = "关于";
-                            if (myConfigBean != null)
-                                content = myConfigBean.about;
-                            break;
-                    }
-                    detailIntent(title, content, urlType);
-                }
-                
+                setToggleButtonValue(b);
             }
         });
+        getData();
+        
         return parentView;
+    }
+    
+    private void setToggleButtonValue(boolean check)
+    {
+        toggleButton.setChecked(check);
+        sharePrefenceUtils.setBooleanPreference(Constants.SharePreKeys.ToggleButton_VALUE, check);
+        if (check)
+        {
+            PushAgent.getInstance(mContext).enable(new IUmengCallback()
+            {
+                @Override
+                public void onSuccess()
+                {
+                    
+                }
+                
+                @Override
+                public void onFailure(String s, String s1)
+                {
+                    
+                }
+            });
+        }
+        else
+        {
+            PushAgent.getInstance(mContext).disable(new IUmengCallback()
+            {
+                @Override
+                public void onSuccess()
+                {
+                    
+                }
+                
+                @Override
+                public void onFailure(String s, String s1)
+                {
+                    
+                }
+            });
+            
+        }
     }
     
     private void detailIntent(String title, String content, String urlType)
@@ -178,40 +208,44 @@ public class MineFragment extends BaseFragment implements DownloadManagerListene
         
     }
     
-    private class MyListAdapter extends BaseAdapter
+    @Override
+    public void onClick(View view)
     {
-        private String[] strings;
         
-        public MyListAdapter(String[] strings)
+        String title = null, content = null, urlType = null;
+        switch (view.getId())
         {
-            this.strings = strings;
-        }
-        
-        @Override
-        public int getCount()
-        {
-            return strings.length;
-        }
-        
-        @Override
-        public Object getItem(int i)
-        {
-            return strings[i];
-        }
-        
-        @Override
-        public long getItemId(int i)
-        {
-            return i;
-        }
-        
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup)
-        {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_listview, null);
-            TextView tvName = (TextView)view.findViewById(R.id.tv_Name);
-            tvName.setText(strings[i]);
-            return view;
+            case R.id.rl_exit:
+                getActivity().finish();
+                System.gc();
+                break;
+            case R.id.rl_commonInfo:
+                title = "信息公告";
+                if (myConfigBean != null)
+                    content = myConfigBean.publicInfo;
+                detailIntent(title, content, urlType);
+                break;
+            case R.id.rl_checkAppUpdate:
+                checkUpdateApp();
+                break;
+            case R.id.rl_help:
+                title = "帮助说明";
+                if (myConfigBean != null)
+                    content = myConfigBean.helpContent;
+                detailIntent(title, content, urlType);
+                break;
+            case R.id.rl_returnback:
+                title = "意见反馈";
+                if (myConfigBean != null)
+                    content = myConfigBean.returnToemail;
+                detailIntent(title, content, urlType);
+                break;
+            case R.id.rl_about:
+                title = "关于";
+                if (myConfigBean != null)
+                    content = myConfigBean.about;
+                detailIntent(title, content, urlType);
+                break;
         }
     }
     
