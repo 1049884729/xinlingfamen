@@ -32,13 +32,16 @@ public class HomeTabActivity extends BaseActivity
     private void hideFragments()
     {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        
+        weiOrgNetFragment = (WeiOrgNetFragment)fragmentManager.findFragmentByTag("weiOrgNetFragment");
         if (weiOrgNetFragment != null)
             fragmentTransaction.hide(weiOrgNetFragment);
+        resourceFragment = (ResourceFragment)fragmentManager.findFragmentByTag("resourceFragment");
         if (resourceFragment != null)
             fragmentTransaction.hide(resourceFragment);
+        communityFragment = (CommunityFragment)fragmentManager.findFragmentByTag("communityFragment");
         if (communityFragment != null)
             fragmentTransaction.hide(communityFragment);
+        mineFragment = (MineFragment)fragmentManager.findFragmentByTag("mineFragment");
         if (mineFragment != null)
             fragmentTransaction.hide(mineFragment);
         fragmentTransaction.commit();
@@ -87,18 +90,18 @@ public class HomeTabActivity extends BaseActivity
                 
                 break;
             case 2:
-//                communityFragment = (CommunityFragment)fragmentManager.findFragmentByTag("communityFragment");
-//                if (communityFragment == null)
-//                {
-//                    communityFragment = new CommunityFragment();
-//                    fragmentTransaction.add(R.id.main_fragment, communityFragment, "communityFragment");
-//
-//                }
-//                else
-//                {
-//                    fragmentTransaction.show(communityFragment);
-//                }
-//                break;
+                // communityFragment = (CommunityFragment)fragmentManager.findFragmentByTag("communityFragment");
+                // if (communityFragment == null)
+                // {
+                // communityFragment = new CommunityFragment();
+                // fragmentTransaction.add(R.id.main_fragment, communityFragment, "communityFragment");
+                //
+                // }
+                // else
+                // {
+                // fragmentTransaction.show(communityFragment);
+                // }
+                // break;
             case 3:
                 mineFragment = (MineFragment)fragmentManager.findFragmentByTag("mineFragment");
                 if (mineFragment == null)
@@ -218,14 +221,17 @@ public class HomeTabActivity extends BaseActivity
             }
         }
     }
-
-    public void onResume() {
+    
+    public void onResume()
+    {
         super.onResume();
-        MobclickAgent.onResume(this);       //统计时长
+        MobclickAgent.onResume(this); // 统计时长
     }
-    public void onPause() {
+    
+    public void onPause()
+    {
         super.onPause();
         MobclickAgent.onPause(this);
     }
-
+    
 }
