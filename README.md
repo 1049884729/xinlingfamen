@@ -3,4 +3,5 @@
 1.当前开发简易的android版，建立了一个Android版的目录
 
 
-android释放版本 ： 1.0版本
+android释放版本 ： 1.0版本  https://github.com/1049884729/xinlingfamen/blob/master/apk_releases/v1.0.0-release.apk
+
