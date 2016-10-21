@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 
 import android.support.v7.widget.Toolbar;
@@ -30,27 +31,14 @@ public class ContentTxtActivity extends BaseActivity
     
     public static final String KEY_URITYPE = "keyUriType";// 请求类型
     
-    private ImageView img_back;
-    
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content_txt);
+        setActionBarTitleBackup("");
         titleView = (TextView)findViewById(R.id.tv_title);
-        
         contentView = (TextView)findViewById(R.id.tv_content);
-        img_back = (ImageView)findViewById(R.id.img_back);
-        
-        img_back.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                onBackPressed();
-            }
-        });
-        
         setData(getIntent());
         
     }
@@ -62,27 +50,18 @@ public class ContentTxtActivity extends BaseActivity
         setData(intent);
     }
     
-    private void setData(Intent intent)
-    {
-        if (intent.hasExtra(KEY_TITLE))
-        {
+    private void setData(Intent intent) {
+        if (intent.hasExtra(KEY_TITLE)) {
             titleView.setText(intent.getStringExtra(KEY_TITLE));
+
+
         }
-        
-        if (intent.hasExtra(KEY_CONTENT))
-        {
+
+        if (intent.hasExtra(KEY_CONTENT)) {
             contentView.setText(intent.getStringExtra(KEY_CONTENT));
-        }
-        else if (intent.hasExtra(KEY_URITYPE))
-        {
+        } else if (intent.hasExtra(KEY_URITYPE)) {
             titleView.setText(intent.getStringExtra(KEY_URITYPE));
         }
-        
-    }
-    
-    @Override
-    public void onBackPressed()
-    {
-        super.onBackPressed();
+
     }
 }

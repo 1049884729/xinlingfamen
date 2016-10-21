@@ -15,7 +15,11 @@
 -->
 
 <resources>
+    <style name="DayTheme" parent="@style/Theme.AppCompat.DayNight.NoActionBar">
 
+        <item name="android:screenOrientation">portrait</item>
+        <item name="android:dialogTheme">@android:style/Theme.Holo.Light.Dialog</item>
+    </style>
     <style name="Theme.Start" parent="@style/Theme.AppCompat.DayNight.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_bg</item>
         <item name="android:windowFullscreen">true</item>

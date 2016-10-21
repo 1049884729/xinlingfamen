@@ -32,7 +32,7 @@ public class XlfmApplication extends Application
      * if  false, is debug apk;测试版本
      * else true, is release pak;发布版本
      */
-    private final boolean ISRELEASE=false;
+    private final boolean ISRELEASE=true;
     @Override
     public void onCreate()
     {
