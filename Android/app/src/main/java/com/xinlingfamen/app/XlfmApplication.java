@@ -28,7 +28,11 @@ import java.util.UUID;
 public class XlfmApplication extends Application
 {
     private Context context;
-    
+    /**
+     * if  false, is debug apk;测试版本
+     * else true, is release pak;发布版本
+     */
+    private final boolean ISRELEASE=false;
     @Override
     public void onCreate()
     {
@@ -58,10 +62,12 @@ public class XlfmApplication extends Application
         
         MobclickAgent.setScenarioType(context, MobclickAgent.EScenarioType.E_UM_NORMAL);
         MobclickAgent.enableEncrypt(true);// 6.0.0版本及以后
-        MobclickAgent.setDebugMode(true);
-        CrashHandler crashHandler = CrashHandler.getInstance();
-        crashHandler.init(this);
-        
+        MobclickAgent.setDebugMode(!ISRELEASE);
+        if (ISRELEASE){
+            CrashHandler crashHandler = CrashHandler.getInstance();
+            crashHandler.init(this);
+        }
+
         PushAgent mPushAgent = PushAgent.getInstance(this);
         // 注册推送服务，每次调用register方法都会回调该接口
         mPushAgent.register(new IUmengRegisterCallback()
