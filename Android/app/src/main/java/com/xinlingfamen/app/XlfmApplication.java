@@ -60,9 +60,7 @@ public class XlfmApplication extends Application
         }
         MobclickAgent.onProfileSignIn(userId);
         
-        MobclickAgent.setScenarioType(context, MobclickAgent.EScenarioType.E_UM_NORMAL);
         MobclickAgent.enableEncrypt(true);// 6.0.0版本及以后
-        MobclickAgent.setDebugMode(!ISRELEASE);
         if (ISRELEASE){
             CrashHandler crashHandler = CrashHandler.getInstance();
             crashHandler.init(this);

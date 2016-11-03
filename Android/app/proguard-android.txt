@@ -242,7 +242,7 @@ public static final int *;
    *;
 }
 -keepnames class * implements android.os.Parcelable {
-    public static final ** CREATOR;
+    *;
 }
 -keep class com.linkedin.** { *; }
 -keepattributes Signature
