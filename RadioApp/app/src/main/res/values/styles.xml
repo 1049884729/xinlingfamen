@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat">
@@ -15,6 +15,15 @@
         <item name="colorPrimary">#673AB7</item>
         <!-- 窗口的背景颜色 -->
         <item name="colorPrimaryDark">@android:color/holo_blue_bright</item>
+
+        <!-- Main theme colors -->
+        <!--   your app branding color for the app bar -->
+        <item name="android:colorPrimary" tools:targetApi="lollipop">#673AB7</item>
+        <!--   darker variant for the status bar and contextual app bars -->
+        <item name="android:colorPrimaryDark" tools:targetApi="lollipop">@android:color/holo_blue_bright</item>
+
     </style>
+
+
 
 </resources>

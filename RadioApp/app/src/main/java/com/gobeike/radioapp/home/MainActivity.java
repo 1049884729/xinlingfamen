@@ -1,18 +1,27 @@
 package com.gobeike.radioapp.home;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.PermissionChecker;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.gobeike.radioapp.R;
+import com.gobeike.radioapp.music.MusicService;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -32,7 +41,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-
+        initPermission();
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
@@ -48,7 +57,7 @@ public class MainActivity extends AppCompatActivity
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+                .replace(R.id.container, MainFragment.newInstance(position + 1))
                 .commit();
     }
 
@@ -73,44 +82,40 @@ public class MainActivity extends AppCompatActivity
         actionBar.setTitle(mTitle);
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
 
-        public PlaceholderFragment() {
-        }
+    private int REQUEST_PERMISSION = 0x11;
 
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            return rootView;
-        }
-
-        @Override
-        public void onAttach(Activity activity) {
-            super.onAttach(activity);
-            ((MainActivity) activity).onSectionAttached(
-                    getArguments().getInt(ARG_SECTION_NUMBER));
+    private void initPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int grant = checkCallingPermission(Manifest.permission_group.STORAGE);
+            if (grant != PermissionChecker.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission_group.STORAGE, Manifest.permission.INTERNET}, REQUEST_PERMISSION);
+            }
         }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode==REQUEST_PERMISSION){
+            boolean resultfinal=false;
+            for (int i=0;i<grantResults.length;i++){
+                int result=grantResults[i];
+                if (result!=PermissionChecker.PERMISSION_GRANTED){
+                    String tip=null;
+                    if (permissions[i]==Manifest.permission_group.STORAGE){
+                        tip="读取存储卡权限";
+                    } if (permissions[i]==Manifest.permission.INTERNET){
+                        tip="访问网络的权限";
+                    }
+                    Toast.makeText(MainActivity.this,"没有"+tip+"\n 请授权后在打开应用",Toast.LENGTH_LONG).show();
+                    break;
+                }
+            }
+        }
+
+    }
+
+
 
 }
