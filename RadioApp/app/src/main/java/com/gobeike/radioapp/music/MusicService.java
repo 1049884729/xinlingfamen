@@ -14,7 +14,7 @@ import com.gobeike.radioapp.config.Constants;
 
 import java.io.IOException;
 
-public class MusicService extends Service implements Runnable {
+public class MusicService extends Service implements Runnable, IMusicAction {
     public MusicService() {
     }
 
@@ -24,9 +24,10 @@ public class MusicService extends Service implements Runnable {
         return new MyBindler();
     }
 
+
     public class MyBindler extends Binder {
 
-        public MusicService getService(){
+        public MusicService getService() {
             return MusicService.this;
         }
 
@@ -46,14 +47,44 @@ public class MusicService extends Service implements Runnable {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        if (intent != null) {
-            musicPath = intent.getStringExtra(Constants.PLAY_BUTTON_URL);
-            Log.e("PATH", musicPath);
+        if (intent != null && intent.hasExtra(Constants.MUSIC_ACTION)) {
 
-            playBtnState = intent.getBooleanExtra(Constants.PLAY_BUTTON_STATE, false);
-            if (playBtnState) {
-                startPlayer(musicPath);
+            int action = intent.getIntExtra(Constants.MUSIC_ACTION, 0);
+            switch (action) {
+
+                case Constants.ACTION_playMusic:
+                    playMusic();
+                    break;
+                case Constants.ACTION_pauseMusic:
+                    pauseMusic();
+                    break;
+                case Constants.ACTION_seekbarToMusic:
+                    seekbarToMusic(intent.getIntExtra(Constants.MUSIC_SEEKBAR_VALUE, 0));
+
+                    break;
+                case Constants.ACTION_nextMusic:
+                    nextMusic();
+                    break;
+                case Constants.ACTION_preMusic:
+                    preMusic();
+                    break;
+                case Constants.ACTION_downloadMusic:
+                    downloadMusic();
+                    break;
+                case Constants.ACTION_pointToplayMusic:
+                    musicPath = intent.getStringExtra(Constants.PLAY_BUTTON_URL);
+                    Log.e("PATH", musicPath);
+                    playBtnState = intent.getBooleanExtra(Constants.PLAY_BUTTON_STATE, false);
+                    if (playBtnState) {
+                        pointToplayMusic(musicPath);
+                    } else {
+                        pauseMusic();
+                    }
+                    break;
+                default:
+                    break;
             }
+
         }
 
         return Service.START_STICKY;
@@ -69,62 +100,98 @@ public class MusicService extends Service implements Runnable {
     private MusicInfo musicInfo;
 
     public MusicInfo getMusicInfo() {
-        if (musicInfo!=null&&mediaPlayer!=null){
+        if (musicInfo != null && mediaPlayer != null) {
             musicInfo.currentLength = mediaPlayer.getCurrentPosition();
             musicInfo.totalLength = mediaPlayer.getDuration();
         }
         return musicInfo;
     }
+
     public boolean isPlayer() {
-        if (mediaPlayer!=null){
-           return mediaPlayer.isPlaying();
+        if (mediaPlayer != null) {
+            return mediaPlayer.isPlaying();
         }
         return false;
     }
-    /**
-     * 播放音乐
-     *
-     * @param path
-     */
-    public void startPlayer(String path) {
+
+
+    @Override
+    public void playMusic() {
         if (mediaPlayer == null) return;
-        if (path == null || path.length() == 0) return;
-        mediaPlayer.reset();
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        try {
-            mediaPlayer.setDataSource(path);
-            mediaPlayer.prepare();//本地文件使用
-            mediaPlayer.start();
-            if (musicInfo==null)
+        mediaPlayer.start();
+        if (musicInfo == null)
             musicInfo = new MusicInfo();
 
-            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                nextMusic();
+            }
+        });
+        mediaPlayer.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
+            @Override
+            public void onSeekComplete(MediaPlayer mp) {
 
-                }
-            });
-            mediaPlayer.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
-                @Override
-                public void onSeekComplete(MediaPlayer mp) {
-
-                }
-            });
-            mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-                @Override
-                public boolean onError(MediaPlayer mp, int what, int extra) {
-                    return false;
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            }
+        });
+        mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            @Override
+            public boolean onError(MediaPlayer mp, int what, int extra) {
+                return false;
+            }
+        });
     }
 
-    public void stopPlayer() {
+    @Override
+    public void pauseMusic() {
         if (mediaPlayer == null) return;
-        mediaPlayer.stop();
-        mediaPlayer.release();
+        mediaPlayer.pause();
+
+    }
+
+    @Override
+    public void seekbarToMusic(int processbar) {
+
+        if (mediaPlayer == null) return;
+        mediaPlayer.seekTo(processbar);
+        mediaPlayer.start();
+    }
+
+    @Override
+    public void nextMusic() {
+
+    }
+
+    @Override
+    public void preMusic() {
+
+    }
+
+    @Override
+    public void downloadMusic() {
+
+    }
+
+
+    private String currentPath = null;
+
+    @Override
+    public void pointToplayMusic(String path) {
+        if (mediaPlayer == null) return;
+        if (path == null || path.length() == 0) return;
+
+        if (currentPath == null || !currentPath.equals(path)) {
+            mediaPlayer.reset();
+            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            try {
+                mediaPlayer.setDataSource(path);
+                currentPath = path;
+                mediaPlayer.prepare();//本地文件使用
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        playMusic();
 
 
     }

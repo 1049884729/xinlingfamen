@@ -19,4 +19,20 @@ public class Constants {
             "http://192.168.1.15:8080/%E9%AB%98%E5%B1%B1%E6%B5%81%E6%B0%B4.mp3",
             "http://192.168.1.15:8080/1481755200907.mp4"
     };
+
+
+
+
+    public static String MUSIC_SEEKBAR_VALUE = "seekbarValue";
+
+    public static String MUSIC_ACTION = "Music_Action";
+
+
+    public final static int ACTION_playMusic=1;
+    public final static int ACTION_pauseMusic=2;
+    public final static int ACTION_seekbarToMusic=3;
+    public final static int ACTION_nextMusic=4;
+    public final static int ACTION_preMusic=5;
+    public final static int ACTION_downloadMusic=6;
+    public final static int ACTION_pointToplayMusic=7;
 }

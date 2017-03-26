@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.SeekBar;
 
 import com.gobeike.radioapp.R;
 import com.gobeike.radioapp.config.Constants;
@@ -57,15 +58,34 @@ public class MainFragment  extends Fragment  {
         return fragment;
     }
     Button playerBtn;
-    private ProgressBar progress;
+    private SeekBar progress;
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         playerBtn= (Button) rootView.findViewById(R.id.btn_play);
-        progress= (ProgressBar) rootView.findViewById(R.id.progress);
+        progress= (SeekBar) rootView.findViewById(R.id.progress);
         playerBtn.setTag(false);
+        progress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                Intent intent= IntentUtils.getExplicitIapIntent(getActivity(),getActivity().getPackageName()+".music.service");
+                intent.putExtra(Constants.MUSIC_ACTION, Constants.ACTION_seekbarToMusic);
+                intent.putExtra(Constants.MUSIC_SEEKBAR_VALUE, seekBar.getProgress());
+                getActivity().startService(intent);
+
+            }
+        });
         playerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,6 +101,7 @@ public class MainFragment  extends Fragment  {
 
                 }
                 intent.putExtra(Constants.PLAY_BUTTON_URL, pathLocal);
+                intent.putExtra(Constants.MUSIC_ACTION, Constants.ACTION_pointToplayMusic);
                 playerBtn.setTag(!Boolean.parseBoolean(playerBtn.getTag().toString()));
                 intent.putExtra(Constants.PLAY_BUTTON_STATE, (Boolean) playerBtn.getTag());
                 getActivity().startService(intent);
@@ -128,10 +149,10 @@ public class MainFragment  extends Fragment  {
             switch (msg.what){
                 case CLEAR:
                     handler.removeMessages(CONTINUE);
+                    myBindler.pauseMusic();
                     break;
                 case CONTINUE:
                     if (myBindler!=null&& myBindler.getMusicInfo()!=null){
-                       ;
                         progress.setMax(myBindler.getMusicInfo().totalLength);
                         progress.setProgress(myBindler.getMusicInfo().currentLength);
 
