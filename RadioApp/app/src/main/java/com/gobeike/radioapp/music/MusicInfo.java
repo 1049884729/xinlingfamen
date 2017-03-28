@@ -10,7 +10,7 @@ import android.os.Parcelable;
 public class MusicInfo implements Parcelable {
 
     public String title;
-    public int totalLength,currentLength;
+    public int  totalLength,currentLength;
     public boolean isMusic=true;//isMusic is true;
     public boolean isVideo=false;
 
