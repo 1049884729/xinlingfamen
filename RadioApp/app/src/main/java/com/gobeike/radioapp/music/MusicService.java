@@ -118,7 +118,7 @@ public class MusicService extends Service implements Runnable, IMusicAction
         if (musicInfo != null && mediaPlayer != null)
         {
             musicInfo.currentLength = mediaPlayer.getCurrentPosition();
-            musicInfo.totalLength = mediaPlayer.getDuration();
+            
         }
         return musicInfo;
     }
@@ -140,6 +140,7 @@ public class MusicService extends Service implements Runnable, IMusicAction
         mediaPlayer.start();
         if (musicInfo == null)
             musicInfo = new MusicInfo();
+        musicInfo.totalLength = mediaPlayer.getDuration();
         
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener()
         {
@@ -209,14 +210,24 @@ public class MusicService extends Service implements Runnable, IMusicAction
             {
                 mediaPlayer.setDataSource(url);
                 currentPath = url;
-                mediaPlayer.prepare();// 本地文件使用
+                mediaPlayer.prepareAsync();// 本地文件使用
+                mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener()
+                {
+                    @Override
+                    public void onPrepared(MediaPlayer mp)
+                    {
+                        
+                        playMusic();
+                    }
+                });
+                // mediaPlayer.setNextMediaPlayer();
             }
             catch (IOException e)
             {
                 e.printStackTrace();
             }
         }
-        playMusic();
+        // playMusic();
     }
     
     @Override
@@ -235,14 +246,23 @@ public class MusicService extends Service implements Runnable, IMusicAction
             {
                 mediaPlayer.setDataSource(url);
                 currentPath = url;
-                mediaPlayer.prepare();// 本地文件使用
+                mediaPlayer.prepareAsync();// 本地文件使用
+                mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener()
+                {
+                    @Override
+                    public void onPrepared(MediaPlayer mp)
+                    {
+                        
+                        playMusic();
+                    }
+                });
             }
             catch (IOException e)
             {
                 e.printStackTrace();
             }
         }
-        playMusic();
+        // playMusic();
     }
     
     @Override
@@ -269,14 +289,23 @@ public class MusicService extends Service implements Runnable, IMusicAction
             {
                 mediaPlayer.setDataSource(path);
                 currentPath = path;
-                mediaPlayer.prepare();// 本地文件使用
+                // mediaPlayer.prepare();// 本地文件使用
+                mediaPlayer.prepareAsync();// 本地文件使用
+                mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener()
+                {
+                    @Override
+                    public void onPrepared(MediaPlayer mp)
+                    {
+                        
+                        playMusic();
+                    }
+                });
             }
             catch (IOException e)
             {
                 e.printStackTrace();
             }
         }
-        playMusic();
         
     }
 }
