@@ -4,14 +4,14 @@
     package="com.gobeike.radioapp">
 
     <!--<uses-sdk-->
-        <!--android:minSdkVersion="14"-->
-        <!--tools:overrideLibrary="org.xutils" />-->
+    <!--android:minSdkVersion="14"-->
+    <!--tools:overrideLibrary="org.xutils" />-->
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-
+        android:name=".RadipApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

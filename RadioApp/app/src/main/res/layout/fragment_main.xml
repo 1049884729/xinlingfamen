@@ -2,23 +2,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    android:background="@android:color/white"
     tools:context="com.gobeike.radioapp.home.MainActivity$MainFragment">
 
- <com.gobeike.radioapp.view.MusicPlayView
-     android:layout_width="match_parent"
-     android:layout_height="80dp"
-     android:id="@+id/musicPlayView"
-     android:layout_alignParentBottom="true"/>
+    <com.gobeike.radioapp.view.MusicPlayView
+        android:id="@+id/musicPlayView"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true" />
 
-    <FrameLayout
+    <ListView
+        android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/musicPlayView">
-        <VideoView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/videoview"/>
-    </FrameLayout>
+        android:layout_above="@+id/musicPlayView"
+        android:cacheColorHint="@android:color/transparent" />
+
 
 </RelativeLayout>
