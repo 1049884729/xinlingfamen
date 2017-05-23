@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="80dp"
-    android:background="#E60000"
-    android:layout_alignParentBottom="true">
+    android:layout_alignParentBottom="true"
+    android:background="#E60000">
 
     <TextView
         android:id="@+id/current_time"
@@ -34,12 +34,12 @@
 
     <ImageButton
         android:id="@+id/btn_play"
+        style="@android:style/MediaButton.Play"
         android:layout_width="70dp"
         android:layout_height="80dp"
         android:layout_below="@+id/progress"
         android:layout_centerInParent="true"
         android:text="播放"
-        style="@android:style/MediaButton.Play"
         android:textSize="20sp" />
 
     <ImageButton
@@ -55,14 +55,37 @@
         android:textSize="20sp" />
 
     <ImageButton
+        android:id="@+id/btn_recycle"
+        android:layout_width="70dp"
+
+        android:layout_height="80dp"
+        android:layout_below="@+id/progress"
+        android:layout_marginRight="20dp"
+        android:layout_toLeftOf="@+id/btn_pre"
+        android:src="@android:drawable/ic_media_rew"
+        android:text="上一曲"
+        android:textSize="20sp" />
+
+    <ImageButton
         android:id="@+id/btn_next"
+        style="@android:style/MediaButton.Next"
         android:layout_width="70dp"
         android:layout_height="80dp"
         android:layout_below="@+id/progress"
         android:layout_marginLeft="20dp"
         android:layout_toRightOf="@+id/btn_play"
         android:text="下一曲"
-        style="@android:style/MediaButton.Next"
 
+        android:textSize="20sp" />
+
+    <ImageButton
+        android:id="@+id/btn_down"
+        android:layout_width="70dp"
+        android:layout_height="80dp"
+        android:layout_below="@+id/progress"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@+id/btn_next"
+        android:src="@android:drawable/stat_sys_download"
+        android:text="下一曲"
         android:textSize="20sp" />
 </RelativeLayout>

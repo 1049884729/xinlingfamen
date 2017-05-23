@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.gobeike.radioapp">
 
-    <!--<uses-sdk-->
-    <!--android:minSdkVersion="14"-->
-    <!--tools:overrideLibrary="org.xutils" />-->
+    <!-- <uses-sdk -->
+    <!-- android:minSdkVersion="14" -->
+    <!-- tools:overrideLibrary="org.xutils" /> -->
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -26,7 +26,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".HomeActivity"></activity>
+        <activity android:name=".HomeActivity" />
 
         <service
             android:name=".music.MusicService"
@@ -36,6 +36,8 @@
                 <action android:name="${applicationId}.music.service" />
             </intent-filter>
         </service>
+
+        <activity android:name=".home.MusicDetailActivity"></activity>
     </application>
 
 </manifest>

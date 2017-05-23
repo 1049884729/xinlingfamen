@@ -40,9 +40,6 @@ public class Constants
     
     public final static int ACTION_pointToplayMusic = 7;
     
-    /**
-     * 广播action
-     */
-    public static final String ReceiverFromMusicAction = "com.gobeike.radio.musicAction";
-    
+
+
 }

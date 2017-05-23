@@ -1,7 +1,7 @@
 package com.gobeike.radioapp.home.music;
 
 import com.gobeike.radioapp.config.Constants;
-import com.gobeike.radioapp.config.utils.IntentUtils;
+import com.gobeike.radioapp.utils.IntentUtils;
 
 import android.content.Context;
 import android.content.Intent;
@@ -38,7 +38,15 @@ public class MusicOperation implements IMusicOperation
         intent.putExtra(Constants.MUSIC_SEEKBAR_VALUE, progress);
         context.startService(intent);
     }
-    
+
+
+    @Override
+    public void pauseMusic() {
+        Intent intent = getmIntent();
+        intent.putExtra(Constants.MUSIC_ACTION, Constants.ACTION_pauseMusic);
+        context.startService(intent);
+    }
+
     @Override
     public void nextMusic(String url)
     {

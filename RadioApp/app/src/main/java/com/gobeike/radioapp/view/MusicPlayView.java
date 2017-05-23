@@ -4,15 +4,14 @@ import java.util.List;
 import java.util.SimpleTimeZone;
 
 import com.gobeike.radioapp.R;
-import com.gobeike.radioapp.config.Constants;
-import com.gobeike.radioapp.config.utils.IntentUtils;
+import com.gobeike.radioapp.utils.IntentUtils;
 import com.gobeike.radioapp.home.music.IMusicOperation;
 import com.gobeike.radioapp.home.music.MusicOperation;
-import com.gobeike.radioapp.music.MusicService;
+import com.gobeike.radioapp.music.ICallbackImpl;
+import com.gobeike.radioapp.music.MusicOperationImp;
 import com.gobeike.radioapp.music.PlayerMusicList;
 
 import android.annotation.TargetApi;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -21,19 +20,19 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.os.RemoteException;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import hirondelle.date4j.DateTime;
 
@@ -43,7 +42,10 @@ import hirondelle.date4j.DateTime;
 
 public class MusicPlayView extends FrameLayout
 {
-    
+    public MusicOperationImp getMyBindler() {
+        return myBindler;
+    }
+
     private final String TAG = getClass().getSimpleName();
     
     public MusicPlayView(@NonNull Context context)
@@ -93,6 +95,7 @@ public class MusicPlayView extends FrameLayout
      */
     private PlayerMusicList playerMusicList;
     
+
     private void init(final Context context)
     {
         iMusicOperation = new MusicOperation(context);
@@ -105,7 +108,6 @@ public class MusicPlayView extends FrameLayout
         progress = (SeekBar)childView.findViewById(R.id.progress);
         currentTime = (TextView)childView.findViewById(R.id.current_time);
         totalTime = (TextView)childView.findViewById(R.id.total_time);
-        playerBtn.setTag(false);
         addView(childView);
         progress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
         {
@@ -134,10 +136,29 @@ public class MusicPlayView extends FrameLayout
             @Override
             public void onClick(View v)
             {
-                playerBtn.setTag(!Boolean.parseBoolean(playerBtn.getTag().toString()));
-                updatePlayBtn();
-                iMusicOperation.playMusic(playerMusicList.getCurrentPlayMusic(),
-                    Boolean.parseBoolean(playerBtn.getTag().toString()));
+                if (myBindler != null)
+                {
+                    boolean isState = !myBindler.isPlayer();
+                    updatePlayBtn(!isState);
+                    
+                    if (isState)
+                    {
+                        
+                        /**
+                         * 此时预期按钮状态为：播放
+                         */
+                        iMusicOperation.playMusic(playerMusicList.getCurrentPlayMusic(), isState);
+                    }
+                    else
+                    {
+                        /**
+                         * 此时预期按钮状态为：暂停
+                         */
+                        iMusicOperation.pauseMusic();
+                        
+                    }
+                    
+                }
                 
             }
         });
@@ -148,8 +169,7 @@ public class MusicPlayView extends FrameLayout
             public void onClick(View v)
             {
                 
-                Toast.makeText(context, "next", Toast.LENGTH_SHORT).show();
-                iMusicOperation.preMusic(playerMusicList.getNextPlayMusic());
+                iMusicOperation.nextMusic(playerMusicList.getNextPlayMusic());
                 
             }
         });
@@ -159,46 +179,43 @@ public class MusicPlayView extends FrameLayout
             public void onClick(View v)
             {
                 iMusicOperation.preMusic(playerMusicList.getPrePlayMusic());
-                Toast.makeText(context, "pre", Toast.LENGTH_SHORT).show();
                 
             }
         });
     }
     
-    private void updatePlayBtn()
+    private void updatePlayBtn(boolean isPlayerState)
     {
-        if (playerBtn != null)
+        
+        if (isPlayerState)
         {
-            
-            boolean stateBtn = Boolean.parseBoolean(playerBtn.getTag().toString());
-            if (stateBtn)
-            {
-                playerBtn.setImageResource(android.R.drawable.ic_media_pause);
-            }
-            else
-            {
-                playerBtn.setImageResource(android.R.drawable.ic_media_play);
-                
-            }
-            
-        }
-    }
-    
-    private void playMusicState()
-    {
-        if (!Boolean.parseBoolean(playerBtn.getTag().toString()))
-        {
-            handler.sendEmptyMessage(CONTINUE);
-            
+            playerBtn.setImageResource(android.R.drawable.ic_media_pause);
         }
         else
         {
-            handler.sendEmptyMessage(CLEAR);
+            playerBtn.setImageResource(android.R.drawable.ic_media_play);
             
         }
-        updatePlayBtn();
         
     }
+    
+    private ICallbackImpl iCallback = new ICallbackImpl()
+    {
+        
+        @Override
+        public String getNextMusicPath()
+            throws RemoteException
+        {
+            return playerMusicList.getNextPlayMusic();
+        }
+        
+        @Override
+        public void showCacheProgress(String desc, float percent)
+            throws RemoteException
+        {
+            
+        }
+    };
     
     private ServiceConnection connection = new ServiceConnection()
     {
@@ -206,17 +223,25 @@ public class MusicPlayView extends FrameLayout
         @Override
         public void onServiceConnected(ComponentName name, IBinder service)
         {
-            myBindler = ((MusicService.MyBindler)service).getService();
+            myBindler = (MusicOperationImp)service;
+            try
+            {
+                myBindler.registerCallback(iCallback);
+            }
+            catch (RemoteException e)
+            {
+                e.printStackTrace();
+            }
         }
         
         @Override
         public void onServiceDisconnected(ComponentName name)
         {
-            
+            myBindler = null;
         }
     };
     
-    private MusicService myBindler;
+    private MusicOperationImp myBindler;
     
     /**
      * 设置音乐播放清单
@@ -241,6 +266,7 @@ public class MusicPlayView extends FrameLayout
     
     public void onPause()
     {
+        
         getContext().unbindService(connection);
         
     }
@@ -284,6 +310,7 @@ public class MusicPlayView extends FrameLayout
             
             if (myBindler != null && myBindler.getMusicInfo() != null)
             {
+                updatePlayBtn(myBindler.isPlayer());
                 timeFormat = getFormat(myBindler.getMusicInfo().totalLength);
                 tempTime = DateTime.forInstant(myBindler.getMusicInfo().totalLength, new SimpleTimeZone(0, "GMT"));
                 totalTime.setText(tempTime.format(timeFormat));
@@ -292,8 +319,8 @@ public class MusicPlayView extends FrameLayout
                 currentTime.setText(tempTime.format(timeFormat));
                 progress.setMax(myBindler.getMusicInfo().totalLength);
                 progress.setProgress(myBindler.getMusicInfo().currentLength);
-                
             }
+            
         }
         
     };
@@ -311,29 +338,6 @@ public class MusicPlayView extends FrameLayout
             
         }
         return temp;
-    }
-    
-    /**
-     * 负责接收l来自MusicService中的操作变化
-     */
-    public class ReceiverFromMusicServer extends BroadcastReceiver
-    {
-        
-        @Override
-        public void onReceive(Context context, Intent intent)
-        {
-            if (intent.getAction().equals(Constants.ReceiverFromMusicAction))
-            {
-                int acionValue = intent.getIntExtra(Constants.MUSIC_ACTION, 0);
-                switch (acionValue)
-                {
-                    case Constants.ACTION_nextMusic:
-                        // playMusic(playerMusicList.getNextPlayMusic());
-                        break;
-                }
-                
-            }
-        }
     }
     
 }

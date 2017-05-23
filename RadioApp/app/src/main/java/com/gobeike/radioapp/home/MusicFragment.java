@@ -8,6 +8,7 @@ import com.gobeike.radioapp.config.Constants;
 import com.gobeike.radioapp.view.MusicPlayView;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -61,6 +62,12 @@ public class MusicFragment extends Fragment
         String[] arraylist = Constants.music_List;
         
         musicPlayView.setPlayList(new ArrayList<String>(Arrays.asList(arraylist)));
+        musicPlayView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(),MusicDetailActivity.class));
+            }
+        });
         return rootView;
     }
     

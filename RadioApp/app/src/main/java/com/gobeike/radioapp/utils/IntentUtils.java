@@ -1,4 +1,4 @@
-package com.gobeike.radioapp.config.utils;
+package com.gobeike.radioapp.utils;
 
 import java.util.List;
 
