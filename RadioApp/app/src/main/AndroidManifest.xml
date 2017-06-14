@@ -27,6 +27,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".HomeActivity" />
+        <activity android:name=".home.VideoDetailActivity" />
 
         <service
             android:name=".music.MusicService"

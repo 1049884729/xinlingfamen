@@ -95,6 +95,7 @@ public class NavigationDrawerFragment extends Fragment
         super.onActivityCreated(savedInstanceState);
         // Indicate that this fragment would like to influence the set of actions in the action bar.
         setHasOptionsMenu(true);
+        showGlobalContextActionBar();
     }
     
     @Override
@@ -110,8 +111,7 @@ public class NavigationDrawerFragment extends Fragment
             }
         });
         mDrawerListView.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,
-            android.R.id.text1, new String[] {getString(R.string.title_section1), getString(R.string.title_section2),
-                getString(R.string.title_section3),}));
+            android.R.id.text1, getResources().getStringArray(R.array.title_menus)));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
     }
@@ -131,7 +131,6 @@ public class NavigationDrawerFragment extends Fragment
     {
         mFragmentContainerView = getActivity().findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
-        
         // set a custom shadow that overlays the main content when the drawer opens
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         // set up the drawer's list view with items and click listener
@@ -202,7 +201,8 @@ public class NavigationDrawerFragment extends Fragment
         
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
-    
+
+
     private void selectItem(int position)
     {
         mCurrentSelectedPosition = position;
@@ -256,41 +256,41 @@ public class NavigationDrawerFragment extends Fragment
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
     
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
-    {
-        // If the drawer is open, show the global app actions in the action bar. See also
-        // showGlobalContextActionBar, which controls the top-left area of the action bar.
-        if (mDrawerLayout != null && isDrawerOpen())
-        {
-            inflater.inflate(R.menu.global, menu);
-            showGlobalContextActionBar();
-        }
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-    
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        if (mDrawerToggle.onOptionsItemSelected(item))
-        {
-            return true;
-        }
-        
-        if (item.getItemId() == R.id.action_example)
-        {
-            Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
-            return true;
-        }
-        
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+//    {
+//        // If the drawer is open, show the global app actions in the action bar. See also
+//        // showGlobalContextActionBar, which controls the top-left area of the action bar.
+//        if (mDrawerLayout != null && isDrawerOpen())
+//        {
+//            inflater.inflate(R.menu.global, menu);
+//            showGlobalContextActionBar();
+//        }
+//        super.onCreateOptionsMenu(menu, inflater);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item)
+//    {
+//        if (mDrawerToggle.onOptionsItemSelected(item))
+//        {
+//            return true;
+//        }
+//
+//        if (item.getItemId() == R.id.action_example)
+//        {
+//            Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
     
     /**
      * Per the navigation drawer design guidelines, updates the action bar to show the global app 'context', rather than
      * just what's in the current screen.
      */
-    private void showGlobalContextActionBar()
+    public void showGlobalContextActionBar()
     {
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayShowTitleEnabled(true);

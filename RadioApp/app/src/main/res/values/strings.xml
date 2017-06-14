@@ -2,9 +2,13 @@
     <string name="app_name">RadioApp</string>
     <string name="title_activity_main">MainActivity</string>
 
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
+    <string-array name="title_menus">
+        <item >音频</item>
+        <item >视频</item>
+        <item >书籍</item>
+        <item >退出应用</item>
+    </string-array>
+
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
