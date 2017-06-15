@@ -3,10 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.gobeike.radioapp">
 
-    <!-- <uses-sdk -->
-    <!-- android:minSdkVersion="14" -->
-    <!-- tools:overrideLibrary="org.xutils" /> -->
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -15,11 +11,12 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/ActionBarTheme">
         <activity
             android:name=".home.MainActivity"
-            android:label="@string/title_activity_main">
+           >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

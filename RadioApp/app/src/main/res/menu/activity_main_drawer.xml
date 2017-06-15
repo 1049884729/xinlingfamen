@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_camera"
+            android:icon="@drawable/ic_music_video_white_48px"
+            android:title="音频"/>
+        <item
+            android:id="@+id/nav_gallery"
+            android:icon="@drawable/ic_video_library"
+            android:title="视频"/>
+        <item
+            android:id="@+id/nav_slideshow"
+            android:icon="@drawable/ic_book_white_48px"
+            android:title="书籍"/>
+
+    </group>
+
+    <item android:title="设置">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_message_white_48px"
+                android:title="通知"/>
+            <item
+                android:id="@+id/nav_exit"
+                android:icon="@drawable/ic_exit_white_48px"
+                android:title="退出应用"/>
+        </menu>
+    </item>
+
+</menu>

@@ -70,7 +70,7 @@ public class MusicService extends Service implements Runnable
                     break;
                 case Constants.ACTION_pointToplayMusic:
                     musicPath = intent.getStringExtra(Constants.PLAY_BUTTON_URL);
-                    Log.e("PATH", musicPath);
+                    Log.e("PATH", musicPath+"");
                     playBtnState = intent.getBooleanExtra(Constants.PLAY_BUTTON_STATE, false);
                     if (playBtnState)
                     {
