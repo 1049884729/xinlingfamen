@@ -38,4 +38,5 @@ dependencies {
 
     //视频播放
     compile 'fm.jiecao:jiecaovideoplayer:5.5.4'
+
 }
