@@ -82,14 +82,16 @@ public class VideosListFragment extends Fragment
         {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView)view;
-            if (mColumnCount <= 1)
-            {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            }
-            else
-            {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+
+//            if (mColumnCount <= 1)
+//            {
+//                recyclerView.setLayoutManager(new LinearLayoutManager(context));
+//            }
+//            else
+//            {
+//                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+//            }
             recyclerView.setAdapter(new MyVideosListRecyclerViewAdapter(DummyContent.ITEMS, mListener));
         }
         return view;

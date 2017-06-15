@@ -6,28 +6,20 @@ import android.Manifest;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.PermissionChecker;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
-    
-    /**
-     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-     */
-    private NavigationDrawerFragment mNavigationDrawerFragment;
-    
-    /**
-     * Used to store the last screen title. For use in {@link #restoreActionBar()}.
-     */
-    private CharSequence mTitle;
-    
-    private String[] titleArray = null;
     
     private FragmentManager fragmentManager;
     
@@ -35,63 +27,105 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        titleArray = getResources().getStringArray(R.array.title_menus);
         setContentView(R.layout.activity_main);
         initPermission();
-
-        mNavigationDrawerFragment =
-            (NavigationDrawerFragment)getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-        mTitle = getTitle();
-        // Set up the drawer.
-        mNavigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout)findViewById(R.id.drawer_layout));
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        
+        DrawerLayout drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+        
+        NavigationView navigationView = (NavigationView)findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        
+        /**
+         * 选中第一个默认
+         */
+        
+        navigationView.getMenu().getItem(0).setChecked(true);
+        MenuItem menuItem = navigationView.getMenu().getItem(0);
+        onNavigationItemSelected(menuItem);
+    }
+    
+    @Override
+    public void onBackPressed()
+    {
+        DrawerLayout drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START))
+        {
+            drawer.closeDrawer(GravityCompat.START);
+        }
+        else
+        {
+            super.onBackPressed();
+        }
+    }
+    
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item)
+    {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+        if (fragmentManager == null)
+            fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        
+        if (id == R.id.nav_camera)
+        {
+            // Handle the camera action
+            
+            musicFragment = (MusicFragment)fragmentManager.findFragmentByTag("MusicFragment");
+            if (musicFragment == null)
+            {
+                transaction.replace(R.id.container, MusicFragment.newInstance(1), "MusicFragment");
+            }
+            else
+            {
+                transaction.replace(R.id.container, musicFragment, "MusicFragment");
+            }
+            
+            transaction.commitNowAllowingStateLoss();
+        }
+        else if (id == R.id.nav_gallery)
+        {
+            videosListFragment = (VideosListFragment)fragmentManager.findFragmentByTag("videosListFragment");
+            if (videosListFragment == null)
+            {
+                transaction.replace(R.id.container, VideosListFragment.newInstance(8), "videosListFragment");
+            }
+            else
+            {
+                transaction.replace(R.id.container, videosListFragment, "videosListFragment");
+            }
+            transaction.commitNowAllowingStateLoss();
+            
+        }
+        else if (id == R.id.nav_slideshow)
+        {
+            
+        }
+        else if (id == R.id.nav_share)
+        {
+            
+        }
+        else if (id == R.id.nav_exit)
+        {
+            return true;
+        }
+        
+        DrawerLayout drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        getSupportActionBar().setTitle(item.getTitle());
+        
+        return true;
     }
     
     private MusicFragment musicFragment;
     
     private VideosListFragment videosListFragment;
-    
-    @Override
-    public void onNavigationDrawerItemSelected(int position)
-    {
-        // update the main content by replacing fragments
-        if (fragmentManager == null)
-            fragmentManager = getSupportFragmentManager();
-        
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        switch (position)
-        {
-            case 0:
-                musicFragment = (MusicFragment)fragmentManager.findFragmentByTag("MusicFragment");
-                if (musicFragment == null)
-                {
-                    transaction.replace(R.id.container, MusicFragment.newInstance(position + 1), "MusicFragment");
-                }
-                else
-                {
-                    transaction.replace(R.id.container, musicFragment, "MusicFragment");
-                }
-                break;
-            case 1:
-                videosListFragment = (VideosListFragment)fragmentManager.findFragmentByTag("videosListFragment");
-                if (videosListFragment == null)
-                {
-                    transaction.replace(R.id.container, VideosListFragment.newInstance(8), "videosListFragment");
-                }
-                else
-                {
-                    transaction.replace(R.id.container, videosListFragment, "videosListFragment");
-                }
-                break;
-            case 2:
-                break;
-        }
-        transaction.commitNowAllowingStateLoss();
-    }
-    
-    public void onSectionAttached(int number)
-    {
-        mTitle = titleArray[number - 1];
-    }
     
     private int REQUEST_PERMISSION = 0x11;
     
@@ -107,9 +141,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
             }
         }
     }
-
-
-
+    
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
     {

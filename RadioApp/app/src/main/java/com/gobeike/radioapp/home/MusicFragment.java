@@ -103,10 +103,5 @@ public class MusicFragment extends Fragment
     // super.onStop();
     // EventBus.getDefault().unregister(this);
     // }
-    @Override
-    public void onAttach(Activity activity)
-    {
-        super.onAttach(activity);
-        ((MainActivity)activity).onSectionAttached(getArguments().getInt(ARG_SECTION_NUMBER));
-    }
+
 }
