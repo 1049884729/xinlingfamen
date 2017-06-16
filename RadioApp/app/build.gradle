@@ -35,7 +35,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.android.support:design:25.3.1'
-
+    compile 'com.bartoszlipinski.recyclerviewheader:library:1.2.0'
     //视频播放
     compile 'fm.jiecao:jiecaovideoplayer:5.5.4'
 
