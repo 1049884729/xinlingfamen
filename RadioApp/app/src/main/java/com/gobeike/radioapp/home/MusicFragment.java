@@ -5,13 +5,16 @@ import java.util.Arrays;
 
 import com.gobeike.radioapp.R;
 import com.gobeike.radioapp.config.Constants;
+import com.gobeike.radioapp.home.dummy.DummyContent;
+import com.gobeike.radioapp.home.dummy.MyVideosListRecyclerViewAdapter;
 import com.gobeike.radioapp.view.MusicPlayView;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,7 +63,12 @@ public class MusicFragment extends Fragment
         musicPlayView = (MusicPlayView)rootView.findViewById(R.id.musicPlayView);
         // String[] arraylist=Constants.music_List_local;
         String[] arraylist = Constants.music_List;
-        
+        RecyclerView recyclerView = (RecyclerView)rootView.findViewById(R.id.listView);
+        // set LayoutManager for your RecyclerView
+        // header.attachTo(recyclerView, true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(new MyVideosListRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+
         musicPlayView.setPlayList(new ArrayList<String>(Arrays.asList(arraylist)));
         musicPlayView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,13 +78,15 @@ public class MusicFragment extends Fragment
         });
         return rootView;
     }
-    
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
+    private VideosListFragment.OnListFragmentInteractionListener mListener = new VideosListFragment.OnListFragmentInteractionListener()
     {
-        super.onViewCreated(view, savedInstanceState);
-    }
-    
+        @Override
+        public void onListFragmentInteraction(DummyContent.DummyItem item)
+        {
+
+        }
+    };
+
     @Override
     public void onResume()
     {
