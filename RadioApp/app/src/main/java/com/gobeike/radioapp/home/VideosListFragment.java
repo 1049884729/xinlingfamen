@@ -5,6 +5,10 @@ import com.gobeike.radioapp.home.dummy.DummyContent;
 import com.gobeike.radioapp.home.dummy.DummyContent.DummyItem;
 import com.gobeike.radioapp.home.dummy.MyVideosListRecyclerViewAdapter;
 
+
+import android.content.Context;
+import android.content.Intent;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,6 +17,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
+import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
+
+import com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader;
+import com.gobeike.radioapp.R;
+import com.gobeike.radioapp.home.dummy.DummyContent;
+import com.gobeike.radioapp.home.dummy.DummyContent.DummyItem;
+import com.gobeike.radioapp.home.dummy.MyVideosListRecyclerViewAdapter;
+
 
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
@@ -83,6 +97,7 @@ public class VideosListFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.fragment_videoslist_list, container, false);
+
         // RecyclerViewHeader header = (RecyclerViewHeader)view.findViewById(R.id.header);
         
         RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.listView);
@@ -110,13 +125,14 @@ public class VideosListFragment extends Fragment
         return view;
     }
     
+
+
     @Override
-    public void onPause()
-    {
+    public void onPause() {
         super.onPause();
         JCVideoPlayer.releaseAllVideos();
     }
-    
+
     /**
      * This interface must be implemented by activities that contain this fragment to allow an interaction in this
      * fragment to be communicated to the activity and potentially other fragments contained in that activity.
